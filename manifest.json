@@ -1,0 +1,19 @@
+{
+  "manifest_version": 0.1,
+  "name": "ButWhyMdl",
+  "version": "0.1",
+
+  "description": "Tries to removes thos pesky modals",
+
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.mozilla.org/*"],
+      "js": ["ButWhyMdl.js"]
+    }
+  ]
+
+}
