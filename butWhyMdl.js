@@ -1,8 +1,12 @@
 //body should never have overflow: hidden
 document.body.style.overflow = "scroll";
 //var x = document.getElementsByClassName("");
-var objArr = document.body.querySelectorAll(".some-modal-class");
+//var objArr = document.body.querySelectorAll("div");
+var objArr = document.getElementsByTagName("div");
 
-objArr.forEach( function(obj){
-obj.style.display = "none";
-});
+for(i=0; i<objArr.length; i++){
+	if(objArr[i].className.match(/modal/ig)){
+	objArr[i].style.display="none";
+	}
+
+}
