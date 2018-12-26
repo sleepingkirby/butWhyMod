@@ -10,9 +10,15 @@
     "48": "icons/icon-48.png"
   },
 
+  "browser_action": {
+    "default_icon": "icons/icon-48.png",
+    "default_title": "But Why Modal?",
+    "default_popup": "popup/menu.html"
+  },
+
   "content_scripts": [
     {
-      "matches": ["file:///*"],
+      "matches": ["<all_urls>"],
       "js": ["butWhyMdl.js"]
     }
   ]
