@@ -1,3 +1,6 @@
+
+//document.addEventListener('readystatechange', () => console.log("=========>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + document.readyState));
+
 //loading external files and settings.
 (function(mnl=false) {
   /**
@@ -54,10 +57,12 @@ pre: none
 post: div's with modals 
 goes through the object array of objArr from getElementsByTagName and 
 sets a style on it (namely display: none; z-index:-99999999)
+_5hn6 is strictly for facebook
 ------------------------*/
-function disableModal(objArr){
+function disableModal(objArr, regexStr='(modal|backdrop|alert|_5hn6)'){
+var regexPatt = new RegExp(regexStr, "ig");
 	for(let obj of objArr){
-		if(obj.className.match(/(modal|backdrop|alert)/ig)){
+		if(obj.className.match(regexPatt)){
 		console.log("butWhyMdl: found object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
 		obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
 		obj.className="dontCare";
@@ -85,7 +90,7 @@ pre: pageDone()
 post: none
 runs pageDone after "secs" amount of time
 -----------------------*/
-async function delayRun(secs=7500) {
+async function delayRun(secs=6500) {
 
   console.log('butWhyMdl: Setting time for delayed modal removal for ' + secs + " milliseconds");
   await sleep(secs);
@@ -95,16 +100,15 @@ async function delayRun(secs=7500) {
 
 
 
-
-// print state changes
-//document.addEventListener('readystatechange', () => console.log("=========>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + document.readyState));
 	if(!mnl){
 	//document.onload = pageDone();
+	console.log('butWhyMdl: Preliminary modal removal...');
 	pageDone();
+	console.log('butWhyMdl: adding event listener for removal on page complete.');
 	document.addEventListener('readystatechange', event => {
 	  if (event.target.readyState === 'complete') {
 	  console.log("butWhyMdl: Page done loading. Trying to remove modals. Document state: " + document.readyState);
-	    pageDone();
+	  pageDone();
 	  }
 	});
 	delayRun();
