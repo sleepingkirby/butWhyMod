@@ -66,6 +66,7 @@ var regexPatt = new RegExp(regexStr, "ig");
 		console.log("butWhyMdl: found object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
 		obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
 		obj.className="dontCare";
+		obj.id="dontCare";
 		}
 	}
 }

@@ -1,0 +1,68 @@
+html, body {
+  width: 100px;
+  font-family: "arial";
+  background-color: #ffffff;
+  font-size: 10pt;
+}
+
+.button {
+  margin: 3% auto;
+  padding: 2px;
+  text-align: center;
+  font-size: 10pt;
+  cursor: pointer;
+  border: 1px solid #e6e6e6;
+}
+
+.button:focus{
+  border: 1px solid #000000;
+}
+
+.switch{
+margin-top: 8px;
+width: 100%;
+text-align: right;
+}
+
+.btn{
+border: 1px solid #e6e6e6;
+background-color: white;
+color: black;
+padding: 3px 5px 3px 5px;
+border-radius: 4px;
+margin: 0px 0px 0px 0px;
+}
+
+#tgl{
+display: none;
+}
+
+#tgl:checked+.btn{
+background-color: #31B0D5;
+color: #ffffff;
+}
+
+#tgl+.btn{
+background-color: white;
+color: black;
+}
+
+#tgl:checked+.btn+.btn{
+background-color: white;
+color: black;
+}
+
+#tgl+.btn+.btn{
+background-color: #31B0D5;
+color: #ffffff;
+}
+
+a{
+font-size: 8pt;
+}
+
+.about{
+margin-top: 8px;
+width: 100%;
+text-align: right;
+}
