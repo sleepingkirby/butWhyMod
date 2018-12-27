@@ -101,6 +101,16 @@ async function delayRun(secs=6500) {
   pageDone();
 }
 
+/*--------------------
+pre: everything above here
+post: everything modified as a result of running functions above here
+the main logic for what to do when a message comes in from the popup menu
+---------------------*/
+function runOnMsg(request, sender, sendResponse){
+  if(request.action){
+  console.log(request.action);
+  }
+}
 
 	if(!mnl){
 	//document.onload = pageDone();
@@ -117,4 +127,10 @@ async function delayRun(secs=6500) {
 	}
 
 
+
+	browser.runtime.onMessage.addListener(runOnMsg);
 })();
+
+
+
+
