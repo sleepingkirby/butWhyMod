@@ -8,11 +8,13 @@
    * If this content script is injected into the same page again,
    * it will do nothing next time.
    */
+
   if (window.hasRun) {
     return;
   }
   window.hasRun = true;
   window.hasModaled = false;
+
 
 /*--------------------------
 pre: none
@@ -100,7 +102,6 @@ async function delayRun(secs=6500) {
 }
 
 
-
 	if(!mnl){
 	//document.onload = pageDone();
 	console.log('butWhyMdl: Preliminary modal removal...');
@@ -115,7 +116,5 @@ async function delayRun(secs=6500) {
 	delayRun();
 	}
 
-	
+
 })();
-
-

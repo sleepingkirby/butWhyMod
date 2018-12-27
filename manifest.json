@@ -6,6 +6,11 @@
 
   "description": "But why modals? (removes modals)",
 
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
   "icons": {
     "48": "icons/icon-48.png"
   },
@@ -14,6 +19,12 @@
     "default_icon": "icons/icon-48.png",
     "default_title": "But Why Modal?",
     "default_popup": "popup/menu.html"
+  },
+
+  "options_ui": {
+    "page": "options/settings.html",
+    "browser_style": true,
+    "chrome_style": true
   },
 
   "content_scripts": [
