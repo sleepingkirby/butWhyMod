@@ -6,7 +6,15 @@ alert(str);
 */
 
 function reportErr(error){
-console.error('Failed to execute beastify content script: ' + error.message);
+console.error('butWhyMdl: Failed to insert content script into tab/page: ' + error.message);
+}
+
+function onError(item){
+console.log("Error: " + error);
+}
+
+function doNothing(item, err){
+
 }
 
 function startListen(){
@@ -14,10 +22,26 @@ function startListen(){
     switch(e.target.name){
       case 'disableMdl':
         //send message to content_scripts
-        alert(e.target.name);
+        //const gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
+        browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+        browser.tabs.sendMessage(tabs[0].id, {action: 'disableMdl'});
+        });
       break;
       case 'mnl':
-	browser.runtime.sendMessage({action: "message from the content script"});
+      /*
+        browser.storage.local.get('mnl').then((item) => {
+          if(item.hasOwnProperty('mnl')){
+            console.debug(e.target.checked);
+            console.debug(item['mnl']);
+          }
+          else{
+            console.log('item is undefined');
+            browser.storage.local.set({mnl: e.target.checked});
+          }
+        }
+        , onError);
+      */
+         browser.storage.local.set({mnl: e.target.checked}).then(()=>{console.log('butWhyMdl: \'manul\' set to ' + e.target.checked)}, onError);
       break;
       case 'settings':
         browser.runtime.openOptionsPage().then();
@@ -26,9 +50,21 @@ function startListen(){
       break;
     }
   });
+
 }
 
-startListen();
+
+
+  //set the checkbox from the config
+  browser.storage.local.get('mnl').then((item) => {
+  document.getElementsByName('mnl')[0].checked=item['mnl'];
+  });
+
+
+browser.tabs.executeScript({
+file: "/content_scripts/butWhyMdl.js"
+}).then(startListen)
+.catch(reportErr);
 
 //alert(document.getElementsByName('auto').length);
 //document.getElementsByName('mnl')[0].checked=true;
