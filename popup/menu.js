@@ -41,7 +41,7 @@ function startListen(){
         }
         , onError);
       */
-         browser.storage.local.set({mnl: e.target.checked}).then(()=>{console.log('butWhyMdl: \'manul\' set to ' + e.target.checked)}, onError);
+         browser.storage.local.set({mnl: e.target.checked}).then(()=>{console.log('butWhyMdl: \'manual\' set to ' + e.target.checked)}, onError);
       break;
       case 'settings':
         browser.runtime.openOptionsPage().then();
@@ -57,7 +57,14 @@ function startListen(){
 
   //set the checkbox from the config
   browser.storage.local.get('mnl').then((item) => {
-  document.getElementsByName('mnl')[0].checked=item['mnl'];
+    //set default
+    if(!item.hasOwnProperty('mnl')){
+    console.log('butWhyMdl: manual setting doesn\'t exist. Setting default value.');
+    console.debug(item);
+    item={mnl: false};
+    browser.storage.local.set({mnl: false});                         
+    }
+   document.getElementsByName('mnl')[0].checked=item['mnl'];
   });
 
 
