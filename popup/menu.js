@@ -41,7 +41,7 @@ function startListen(){
         }
         , onError);
       */
-         browser.storage.local.set({mnl: e.target.checked}).then(()=>{console.log('butWhyMdl: \'manual\' set to ' + e.target.checked)}, onError);
+         browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMdl: \'manual\' set to ' + !e.target.checked)}, onError);
       break;
       case 'settings':
         browser.runtime.openOptionsPage().then();
@@ -64,7 +64,8 @@ function startListen(){
     item={mnl: false};
     browser.storage.local.set({mnl: false});                         
     }
-   document.getElementsByName('mnl')[0].checked=item['mnl'];
+    //checked = mnl is false(auto), unchecked = mnl is true(manual)
+   document.getElementsByName('mnl')[0].checked = !item['mnl'];
   });
 
 
