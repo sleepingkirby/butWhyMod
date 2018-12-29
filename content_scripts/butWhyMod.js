@@ -71,7 +71,7 @@
 
     for(let obj of objArr){
       if(obj.className.match(regexPatt)){
-      console.log("butWhyMdl: found object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
+      console.log("butWhyMod: found object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       obj.className="dontCare";
       obj.id="dontCare";
@@ -85,9 +85,9 @@
   runs the entire rewrite function
   -------------------------*/
   function pageDone(){
-  console.log("butWhyMdl: Document status: " +  document.readyState);
+  console.log("butWhyMod: Document status: " +  document.readyState);
     var objArr = document.getElementsByTagName("div");
-    console.log("butWhyMdl: starting butWhyMdl. " + objArr.length + " objects to go through");
+    console.log("butWhyMod: starting butWhyMod. " + objArr.length + " objects to go through");
 
     setBody();
 
@@ -95,7 +95,7 @@
     browser.storage.local.get().then((item) => {
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
       if(custDmnPatList.hasOwnProperty(window.location.host)){
-      console.log("butWhyMdl: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", pattern: " +custDmnPatList[window.location.host]);
+      console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", pattern: " +custDmnPatList[window.location.host]);
       disableModal(objArr, custDmnPatList[window.location.host]);	
       }
     });
@@ -112,9 +112,9 @@
   -----------------------*/
   async function delayRun(secs=6500) {
 
-    console.log('butWhyMdl: Setting time for delayed modal removal for ' + secs + " milliseconds");
+    console.log('butWhyMod: Setting time for delayed modal removal for ' + secs + " milliseconds");
     await sleep(secs);
-    console.log('butWhyMdl: Time\'s up. Running delayed modal removal.');
+    console.log('butWhyMod: Time\'s up. Running delayed modal removal.');
     pageDone();
   }
 
@@ -126,7 +126,7 @@
   function runOnMsg(request, sender, sendResponse){
     switch(request.action){
       case 'disableMdl':
-        console.log('butWhyMdl: manual disable of modals');
+        console.log('butWhyMod: manual disable of modals');
         pageDone();
       break;
       default:
@@ -142,7 +142,7 @@
 
     //set default
     if(!item.hasOwnProperty('mnl')){
-    console.log('butWhyMdl: manual setting doesn\'t exist. Setting default value.');
+    console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
     item={mnl: false};
     browser.storage.local.set({mnl: false}); 
     }
@@ -171,26 +171,26 @@
     
     //if dmn in custList, do nothing
     if(custList.hasOwnProperty(dmn)){
-    console.log('butWhyMdl: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
+    console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
     return null;
     } 
 
  
     if(item['mnl'] === false){
-    console.log('butWhyMdl: Automatic pruning set. Starting removal of modal.');
-    console.log('butWhyMdl: Preliminary modal removal...');
+    console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
+    console.log('butWhyMod: Preliminary modal removal...');
     pageDone();
-    console.log('butWhyMdl: adding event listener for removal on page complete.');
+    console.log('butWhyMod: adding event listener for removal on page complete.');
     document.addEventListener('readystatechange', event => {
       if (event.target.readyState === 'complete') {
-      console.log("butWhyMdl: Page done loading. Trying to remove modals. Document state: " + document.readyState);
+      console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + document.readyState);
       pageDone();
       }
     });
     delayRun();
     }
     else{
-    console.log('butWhyMdl: Manual pruning set. No modal removal.');
+    console.log('butWhyMod: Manual pruning set. No modal removal.');
     }
   });
 
