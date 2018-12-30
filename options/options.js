@@ -59,13 +59,13 @@ function startListen(){
       notif.innerHTML='';
 
         //setting custom list
-        browser.storage.local.set({custList: custListObj}).then(saveNotify(notif, 'Ignore List saved.', false ), 
+        chrome.storage.local.set({custList: custListObj}).then(saveNotify(notif, 'Ignore List saved.', false ), 
         (err) => {
         console.log('butWhyMod: Error: '+err);
         });
 
         //setting custom domain patter list
-        browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(saveNotify(notif, 'Custom domains and patterns saved.', true ), 
+        chrome.storage.local.set({custDmnPatList: custDmnPatObj}).then(saveNotify(notif, 'Custom domains and patterns saved.', true ), 
         (err) => {
         console.log('butWhyMod: Error: '+err);
         } );
@@ -85,7 +85,7 @@ function startListen(){
 
 
 //getting saved settings
-browser.storage.local.get().then((item) => {
+chrome.storage.local.get().then((item) => {
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(item.custDmnPatList);
 })

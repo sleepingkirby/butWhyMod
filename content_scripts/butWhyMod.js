@@ -92,7 +92,7 @@
     setBody();
 
     //runs custom domain pattern modal removals.
-    browser.storage.local.get().then((item) => {
+    chrome.storage.local.get().then((item) => {
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
       if(custDmnPatList.hasOwnProperty(window.location.host)){
       console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", pattern: " +custDmnPatList[window.location.host]);
@@ -138,20 +138,20 @@
 
 
   //runs at the start of every page
-  browser.storage.local.get().then((item) => {
+  chrome.storage.local.get().then((item) => {
 
     //set default
     if(!item.hasOwnProperty('mnl')){
     console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
     item={mnl: false};
-    browser.storage.local.set({mnl: false}); 
+    chrome.storage.local.set({mnl: false}); 
     }
 
     //gets ignorelist and custom domain modal removal class
     //also sets defaults if the variables doesn't exist.
   var custList={};
     if(item.hasOwnProperty('custList') === false){
-    browser.storage.local.set({custList: {'mail.google.com': undefined, 'twitter.com': undefined }});
+    chrome.storage.local.set({custList: {'mail.google.com': undefined, 'twitter.com': undefined }});
     custList={'mail.google.com': undefined, 'twitter.com': undefined };
     } 
     else{
@@ -160,7 +160,7 @@
 
   var custDmnPatList={};
     if(!item.hasOwnProperty('custDmnPatList')){
-    browser.storage.local.set({custDmnPatList: {'www.facebook.com':'_5hn6'}});
+    chrome.storage.local.set({custDmnPatList: {'www.facebook.com':'_5hn6'}});
     custDmnPatList={'www.facebook.com':'_5hn6'};
     }
     else{
@@ -194,7 +194,7 @@
     }
   });
 
-  browser.runtime.onMessage.addListener(runOnMsg);
+  chrome.runtime.onMessage.addListener(runOnMsg);
 })();
 
 
