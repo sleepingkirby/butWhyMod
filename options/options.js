@@ -14,7 +14,6 @@ var rtrn={};
     rtrn[objs[0]]=objs[1];
     }
   }
-console.debug(rtrn);
 return rtrn;
 }
 
@@ -34,6 +33,17 @@ var nl="";
 return rtrn;
 }
 
+
+function saveNotify( obj, str, appnd=false){
+console.log('butWhyMod: ' + str);
+    if(appnd){
+    obj.innerHTML= obj.innerHTML + '<br>' + str;
+    }
+    else{
+    obj.innerHTML=str;
+    }
+}
+
 //main function
 function startListen(){
   document.addEventListener("click", (e) => {
@@ -44,9 +54,27 @@ function startListen(){
       var custListObj=txtArToObj(custList);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
+      var notif=document.getElementsByClassName('notify')[0];
+      notif.id='';
+      notif.innerHTML='';
 
-      browser.storage.local.set({custList: custListObj}).then(()=>{console.log('butWhyMod: set \'custList\' to storage')}, (err) => {console.log('butWhyMod: Error: '+err);} );
-      browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(()=>{console.log('butWhyMod: set \'custDmnPatList\' to storage')}, (err) => {console.log('butWhyMod: Error: '+err);} );
+        //setting custom list
+        browser.storage.local.set({custList: custListObj}).then(saveNotify(notif, 'Ignore List saved.', false ), 
+        (err) => {
+        console.log('butWhyMod: Error: '+err);
+        });
+
+        //setting custom domain patter list
+        browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(saveNotify(notif, 'Custom domains and patterns saved.', true ), 
+        (err) => {
+        console.log('butWhyMod: Error: '+err);
+        } );
+
+      notif.id='fadeOut';
+        notif.addEventListener("animationend", ()=>{
+        notif.id='';
+        });
+
       break;
       default:
       break;

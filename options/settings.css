@@ -39,3 +39,37 @@ font-weight: 550;
 font-size: 12pt;
 padding: 6px 12px 6px 12px;
 }
+
+.notify{
+border: 1px solid #FFA4B2;
+border-radius: 3px;
+background-color: #FFD2D9;
+padding: 4px 4px 4px 4px;
+color: #FF3B5A;
+text-align: center;
+margin-bottom: 4px;
+opacity: 0;
+height: auto;
+max-height: 0px;
+margin-bottom: 0px;
+}
+
+#show{
+opacity: 1;
+max-height: 200px;
+margin-bottom: 10px;
+}
+
+#fadeOut{
+animation:opac 5s;
+opacity: 0;
+height: auto;
+max-height: 0px;
+margin-bottom: 0px;
+}
+
+@keyframes opac{
+0%{opacity:1; max-height: 200px; margin-bottom: 20px;}
+99%{opacity:0; max-height: 200px; margin-bottom: 20px;}
+100%{max-height: 0px; margin-bottom: 0px;}
+}

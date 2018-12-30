@@ -11,6 +11,8 @@ console.error('butWhyMod: Failed to insert content script into tab/page: ' + err
 
 function onError(item){
 console.log("Error: " + error);
+var notif=document.getElementsByClassName('notify')[0];
+
 }
 
 function doNothing(item, err){
