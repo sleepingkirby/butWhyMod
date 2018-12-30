@@ -19,6 +19,11 @@ html, body {
 }
 
 .nowbtn{
+width: 100%;
+text-align: right;
+}
+
+.addToIgn{
 margin-bottom: 10px;
 width: 100%;
 text-align: right;

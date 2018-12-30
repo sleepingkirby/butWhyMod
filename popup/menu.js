@@ -27,6 +27,17 @@ function startListen(){
         browser.tabs.sendMessage(tabs[0].id, {action: 'disableMdl'});
         });
       break;
+      case 'addToIgnList':
+        console.log("button pressed");
+        console.debug(e.target.name);
+        browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+        console.debug(tabs[0]);
+        console.debug(tabs[0].id);
+        console.debug(tabs[0].location);
+        console.debug(tabs[0].url);
+        });
+        //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
+      break;
       case 'mnl':
       /*
         browser.storage.local.get('mnl').then((item) => {
