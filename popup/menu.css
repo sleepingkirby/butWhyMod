@@ -19,6 +19,7 @@ html, body {
 }
 
 .nowbtn{
+margin-bottom: 3px;
 width: 100%;
 text-align: right;
 }
@@ -72,6 +73,7 @@ content: "manual prune";
 
 a{
 font-size: 8pt;
+text-decoration: none;
 }
 
 .about{
@@ -80,16 +82,31 @@ width: 100%;
 text-align: right;
 }
 
-.fadeOut{
+.notify{
+border: 1px solid #FFA4B2;
+border-radius: 3px;
+background-color: #FFD2D9;
+padding: 4px 4px 4px 4px;
+color: #FF3B5A;
+text-align: center;
+margin-bottom: 4px;
+opacity: 0;
+height: auto;
+max-height: 0px;
+margin-bottom: 0px;
+}
+
+#fadeOut{
 animation:opac 5s;
 opacity: 0;
 height: auto;
 max-height: 0px;
+margin-bottom: 0px;
 }
 
 @keyframes opac{
-0%{opacity:1; max-height: 200px; }
-99%{opacity:0; max-height: 200px;}
-100%{max-height: 0px;}
+0%{opacity:1; max-height: 200px; margin-bottom: 4px;}
+99%{opacity:0; max-height: 200px; margin-bottom: 4px;}
+100%{max-height: 0px; margin-bottom: 0px;}
 }
 

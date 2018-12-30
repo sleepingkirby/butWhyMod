@@ -44,7 +44,16 @@ function startListen(){
           browser.storage.local.get('custList').then((custList) => {
           var newCL=custList['custList'];
           newCL[host]=undefined;
-            browser.storage.local.set({custList: newCL}).then(()=>{console.log('butWhyMod: added host to custom List ' + host)}, onError);
+            var notif=document.getElementsByClassName('notify')[0];
+            notif.id=''; //resets the notification area animation
+            browser.storage.local.set({custList: newCL}).then(()=>{
+            console.log('butWhyMod: added host to custom List ' + host);
+            notif.innerHTML='\'' + host + '\' added to white list.';
+            notif.id='fadeOut';
+            notif.addEventListener("animationend", ()=>{
+            notif.id='';
+            });
+            }, onError)
           }, onError);
         });
         //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
