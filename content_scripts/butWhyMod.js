@@ -150,12 +150,12 @@
     //gets ignorelist and custom domain modal removal class
     //also sets defaults if the variables doesn't exist.
   var custList={};
-    if(!item.hasOwnProperty('custList')){
-    browser.storage.local.set({custList: {'mail.google.com': undefined}});
-    custList={'mail.google.com': undefined};
+    if(item.hasOwnProperty('custList') === false){
+    browser.storage.local.set({custList: {'mail.google.com': undefined, 'twitter.com': undefined }});
+    custList={'mail.google.com': undefined, 'twitter.com': undefined };
     } 
     else{
-    cusList=item.custList;
+    custList=item.custList;
     }
 
   var custDmnPatList={};

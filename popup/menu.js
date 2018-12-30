@@ -6,7 +6,7 @@ alert(str);
 */
 
 function reportErr(error){
-console.error('butWhyMdl: Failed to insert content script into tab/page: ' + error.message);
+console.error('butWhyMod: Failed to insert content script into tab/page: ' + error.message);
 }
 
 function onError(item){
@@ -41,7 +41,7 @@ function startListen(){
         }
         , onError);
       */
-         browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMdl: \'manual\' set to ' + !e.target.checked)}, onError);
+         browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
       break;
       case 'settings':
         browser.runtime.openOptionsPage().then();
@@ -59,7 +59,7 @@ function startListen(){
   browser.storage.local.get('mnl').then((item) => {
     //set default
     if(!item.hasOwnProperty('mnl')){
-    console.log('butWhyMdl: manual setting doesn\'t exist. Setting default value.');
+    console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
     console.debug(item);
     item={mnl: false};
     browser.storage.local.set({mnl: false});                         
@@ -70,7 +70,7 @@ function startListen(){
 
 
 browser.tabs.executeScript({
-file: "/content_scripts/butWhyMdl.js"
+file: "/content_scripts/butWhyMod.js"
 }).then(startListen)
 .catch(reportErr);
 

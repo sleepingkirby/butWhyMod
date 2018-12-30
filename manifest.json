@@ -1,10 +1,10 @@
 {
 
   "manifest_version": 2,
-  "name": "ButWhyMdl",
+  "name": "ButWhyMod",
   "version": "1.0",
 
-  "description": "But why modals? (removes modals)",
+  "description": "But why modals? Attempts to remove modal for the webpage. Please be aware that some websites requires modals to work properly.",
 
   "permissions": [
     "storage",
@@ -12,11 +12,11 @@
   ],
 
   "icons": {
-    "48": "icons/icon-48.png"
+    "96": "icons/icon-96.png"
   },
 
   "browser_action": {
-    "default_icon": "icons/icon-48.png",
+    "default_icon": "icons/icon-96.png",
     "default_title": "But Why Modal?",
     "default_popup": "popup/menu.html"
   },
@@ -30,7 +30,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["./content_scripts/butWhyMdl.js"]
+      "js": ["./content_scripts/butWhyMod.js"]
     }
   ]
 

@@ -45,8 +45,8 @@ function startListen(){
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
 
-      browser.storage.local.set({custList: custListObj}).then(()=>{console.log('butWhyMdl: set \'custList\' to storage')}, (err) => {console.log('butWhyMdl: Error: '+err);} );
-      browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(()=>{console.log('butWhyMdl: set \'custDmnPatList\' to storage')}, (err) => {console.log('butWhyMdl: Error: '+err);} );
+      browser.storage.local.set({custList: custListObj}).then(()=>{console.log('butWhyMod: set \'custList\' to storage')}, (err) => {console.log('butWhyMod: Error: '+err);} );
+      browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(()=>{console.log('butWhyMod: set \'custDmnPatList\' to storage')}, (err) => {console.log('butWhyMod: Error: '+err);} );
       break;
       default:
       break;
