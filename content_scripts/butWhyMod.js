@@ -143,8 +143,8 @@
     //set default
     if(!item.hasOwnProperty('mnl')){
     console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
-    item={mnl: false};
-    chrome.storage.local.set({mnl: false}); 
+    item={mnl: true};
+    chrome.storage.local.set({mnl: true}); 
     }
 
     //gets ignorelist and custom domain modal removal class
