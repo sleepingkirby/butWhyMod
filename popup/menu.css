@@ -79,3 +79,17 @@ margin-top: 8px;
 width: 100%;
 text-align: right;
 }
+
+.fadeOut{
+animation:opac 5s;
+opacity: 0;
+height: auto;
+max-height: 0px;
+}
+
+@keyframes opac{
+0%{opacity:1; max-height: 200px; }
+99%{opacity:0; max-height: 200px;}
+100%{max-height: 0px;}
+}
+

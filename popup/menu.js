@@ -17,6 +17,16 @@ function doNothing(item, err){
 
 }
 
+//gets hostname from url
+function hostFromURL(str){
+var rtrn=str;
+var proto=rtrn.match(/[a-z]+:\/\/+/g);
+var rtrn=rtrn.substr(proto[0].length,rtrn.length);
+var end=rtrn.search('/');
+var rtrn=rtrn.substr(0,end);
+return rtrn;
+}
+
 function startListen(){
   document.addEventListener("click", (e) => {
     switch(e.target.name){
@@ -28,13 +38,14 @@ function startListen(){
         });
       break;
       case 'addToIgnList':
-        console.log("button pressed");
-        console.debug(e.target.name);
         browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
-        console.debug(tabs[0]);
-        console.debug(tabs[0].id);
-        console.debug(tabs[0].location);
-        console.debug(tabs[0].url);
+        var url=tabs[0].url;
+        var host=hostFromURL(url);
+          browser.storage.local.get('custList').then((custList) => {
+          var newCL=custList['custList'];
+          newCL[host]=undefined;
+            browser.storage.local.set({custList: newCL}).then(()=>{console.log('butWhyMod: added host to custom List ' + host)}, onError);
+          }, onError);
         });
         //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
       break;
@@ -71,7 +82,6 @@ function startListen(){
     //set default
     if(!item.hasOwnProperty('mnl')){
     console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
-    console.debug(item);
     item={mnl: false};
     browser.storage.local.set({mnl: false});                         
     }
