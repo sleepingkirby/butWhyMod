@@ -7,6 +7,7 @@
   "permissions": [
     "storage",
     "declarativeContent",
+    "activeTab",
     "tabs"
   ],
   "icons": {
