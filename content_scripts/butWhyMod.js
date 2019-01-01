@@ -9,6 +9,7 @@
    * it will do nothing next time.
    */
 
+
   if (window.hasRun) {
     return;
   }
