@@ -104,13 +104,9 @@ function startListen(){
   });
 
 
-/*
 chrome.tabs.executeScript({
 file: "/content_scripts/butWhyMod.js"
-}).then(startListen)
-.catch(reportErr);
-*/
-startListen();
+}, startListen);
 
 //alert(document.getElementsByName('auto').length);
 //document.getElementsByName('mnl')[0].checked=true;
