@@ -16,6 +16,8 @@
   window.hasModaled = false;
 
   
+
+  
   /*--------------------------
   pre: none
   post: none
@@ -92,7 +94,7 @@
     setBody();
 
     //runs custom domain pattern modal removals.
-    chrome.storage.local.get().then((item) => {
+    chrome.storage.local.get(null, (item) => {
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
       if(custDmnPatList.hasOwnProperty(window.location.host)){
       console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", pattern: " +custDmnPatList[window.location.host]);
@@ -138,7 +140,7 @@
 
 
   //runs at the start of every page
-  chrome.storage.local.get().then((item) => {
+  chrome.storage.local.get(null, (item) => {
 
     //set default
     if(!item.hasOwnProperty('mnl')){
@@ -147,12 +149,13 @@
     chrome.storage.local.set({mnl: true}); 
     }
 
+
     //gets ignorelist and custom domain modal removal class
     //also sets defaults if the variables doesn't exist.
   var custList={};
     if(item.hasOwnProperty('custList') === false){
-    chrome.storage.local.set({custList: {'mail.google.com': undefined, 'twitter.com': undefined }});
-    custList={'mail.google.com': undefined, 'twitter.com': undefined };
+      chrome.storage.local.set({custList: {'mail.google.com': null, 'twitter.com': null }});
+    custList={'mail.google.com': null, 'twitter.com': null };
     } 
     else{
     custList=item.custList;

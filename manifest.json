@@ -3,29 +3,24 @@
   "manifest_version": 2,
   "name": "ButWhyMod",
   "version": "1.0",
-  "applications": {
-    "gecko": {
-      "id": "sleepingkirby@gmail.com",
-      "strict_min_version": "57.0"
-    }
-  },
   "description": "But why modals? Attempts to remove modals for the webpage. Allows for whitelist/ignore list of hosts that you don't want to disable modals on. Also allows for custom domain and patterns list. Also can turn off automatic removal and disable modals on a per-page basis. *Please be aware that some websites requires modals to work properly and not all modals are bad. Please configure to apply on the pages that you truly want this on.*",
   "permissions": [
     "storage",
+    "declarativeContent",
     "activeTab"
   ],
   "icons": {
     "96": "icons/icon-96.png"
   },
-  "browser_action": {
+  "page_action": {
     "default_icon": "icons/icon-96.png",
     "default_title": "But Why Modal?",
     "default_popup": "popup/menu.html"
   },
-  "options_ui": {
-    "page": "options/settings.html",
-    "browser_style": true,
-    "chrome_style": true
+  "options_page": "options/settings.html",
+  "background": {
+    "scripts": ["./background.js"],
+    "persistent": false
   },
   "content_scripts": [
     {

@@ -35,28 +35,28 @@ function startListen(){
       case 'disableMdl':
         //send message to content_scripts
         //const gettingActiveTab = browser.tabs.query({active: true, currentWindow: true});
-        chrome.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {action: 'disableMdl'});
         });
       break;
       case 'addToIgnList':
-        chrome.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+        chrome.tabs.query({active: true, currentWindow: true},(tabs) => {
         var url=tabs[0].url;
         var host=hostFromURL(url);
-          chrome.storage.local.get('custList').then((custList) => {
-          var newCL=custList['custList'];
-          newCL[host]=undefined;
+          chrome.storage.local.get('custList',(custList) => {
+          var newCL=custList.custList;
+          newCL[host]=null;
             var notif=document.getElementsByClassName('notify')[0];
             notif.id=''; //resets the notification area animation
-            chrome.storage.local.set({custList: newCL}).then(()=>{
+            chrome.storage.local.set({custList: newCL},()=>{
             console.log('butWhyMod: added host to custom List ' + host);
             notif.innerHTML='\'' + host + '\' added to white list.';
             notif.id='fadeOut';
             notif.addEventListener("animationend", ()=>{
             notif.id='';
             });
-            }, onError)
-          }, onError);
+            })
+          });
         });
         //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
       break;
@@ -74,10 +74,13 @@ function startListen(){
         }
         , onError);
       */
-         chrome.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
+         chrome.storage.local.set({mnl: !e.target.checked},()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)});
       break;
       case 'settings':
-        chrome.runtime.openOptionsPage().then();
+        chrome.runtime.openOptionsPage();
+      break;
+      case 'donate':
+        chrome.tabs.create({url: 'https://patreon.com/WKLaume'});
       break;
       default:
       break;
@@ -89,7 +92,7 @@ function startListen(){
 
 
   //set the checkbox from the config
-  chrome.storage.local.get('mnl').then((item) => {
+  chrome.storage.local.get('mnl',(item) => {
     //set default
     if(!item.hasOwnProperty('mnl')){
     console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
@@ -101,10 +104,13 @@ function startListen(){
   });
 
 
+/*
 chrome.tabs.executeScript({
 file: "/content_scripts/butWhyMod.js"
 }).then(startListen)
 .catch(reportErr);
+*/
+startListen();
 
 //alert(document.getElementsByName('auto').length);
 //document.getElementsByName('mnl')[0].checked=true;
