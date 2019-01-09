@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "ButWhyMod",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Modals are those in-page popups. Attempts to remove modals for the webpage. *Please be aware that some websites requires modals.*",
   "permissions": [
     "storage",

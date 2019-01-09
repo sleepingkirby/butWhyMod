@@ -1,5 +1,4 @@
 
-//document.addEventListener('readystatechange', () => console.log("=========>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + document.readyState));
 
 //loading external files and settings.
 (function() {
@@ -35,6 +34,7 @@
   sets the main <body> tag. There's no real good reason why it should ever have overflow: hidden
   ----------------------*/
   function setBody(){
+  document.documentElement.setAttribute('style','overflow: auto !important');
   document.body.setAttribute('style', 'overflow: auto !important');
     if(document.body.className.match(/modal/ig)){
     //document.body.className="";
@@ -49,7 +49,7 @@
   -----------------------*/
   function disableBackdrop(objArr){
     for(let obj of objArr){
-      if(obj.className.match(/backdrop/ig)){
+      if(obj.className.match(/(backdrop|veil|lightbox)/ig)){
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       }
     }
@@ -64,9 +64,9 @@
   sets a style on it (namely display: none; z-index:-99999999)
   _5hn6 is strictly for facebook
   ------------------------*/
-  function disableModal(objArr, regexStr='(modal|backdrop|alert)'){
+  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|fancybox|sp_)'){
     if(regexStr==='undefined' || regexStr===null){
-    var regexPatt = new RegExp('(modal|backdrop|alert)', "ig");
+    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|fancybox|sp_)', "ig");
     }
     else{
     var regexPatt = new RegExp(regexStr, "ig");
