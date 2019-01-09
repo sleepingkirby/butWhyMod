@@ -62,9 +62,9 @@
   sets a style on it (namely display: none; z-index:-99999999)
   _5hn6 is strictly for facebook
   ------------------------*/
-  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|fancybox|sp-message)'){
+  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|fancybox|sp_)'){
     if(regexStr==='undefined' || regexStr===null){
-    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|fancybox|sp-message)', "ig");
+    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|fancybox|sp_', "ig");
     }
     else{
     var regexPatt = new RegExp(regexStr, "ig");
