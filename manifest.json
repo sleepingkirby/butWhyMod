@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "ButWhyMod",
-  "version": "1.0",
+  "version": "1.01",
   "applications": {
     "gecko": {
       "id": "sleepingkirby@gmail.com",
