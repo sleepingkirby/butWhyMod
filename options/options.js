@@ -54,6 +54,9 @@ function startListen(){
       var custListObj=txtArToObj(custList);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
+      var custDmnSty=document.getElementsByClassName('custDmnStyTxt')[0].value;
+      var custDmnStyObj=txtArToObj(custDmnSty);
+
       var notif=document.getElementsByClassName('notify')[0];
       notif.id='';
       notif.innerHTML='';
@@ -64,11 +67,18 @@ function startListen(){
         console.log('butWhyMod: Error: '+err);
         });
 
-        //setting custom domain patter list
-        browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(saveNotify(notif, 'Custom domains and patterns saved.', true ), 
+        //setting custom domain modal pattern list
+        browser.storage.local.set({custDmnPatList: custDmnPatObj}).then(saveNotify(notif, 'Custom domains and modal patterns saved.', true ), 
         (err) => {
         console.log('butWhyMod: Error: '+err);
         } );
+
+        //setting custom domain style patterns list
+        browser.storage.local.set({custDmnStyList: custDmnStyObj}).then(saveNotify(notif, 'Custom domains and styled patterns saved.', true ), 
+        (err) => {
+        console.log('butWhyMod: Error: '+err);
+        } );
+
 
       notif.id='fadeOut';
         notif.addEventListener("animationend", ()=>{
@@ -88,6 +98,7 @@ function startListen(){
 browser.storage.local.get().then((item) => {
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(item.custDmnPatList);
+ document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(item.custDmnStyList);
 })
 //running main function
 startListen();
