@@ -34,8 +34,11 @@
   sets the main <body> tag. There's no real good reason why it should ever have overflow: hidden
   ----------------------*/
   function setBody(){
-  document.documentElement.setAttribute('style','overflow: auto !important');
-  document.body.setAttribute('style', 'overflow: auto !important');
+  var prevStyle=document.documentElement.getAttribute('style')?document.documentElement.getAttribute('style'):'';
+  document.documentElement.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+
+  prevStyle=document.body.getAttribute('style')?document.body.getAttribute('style'):'';
+  document.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
     if(document.body.className.match(/modal/ig)){
     //document.body.className="";
     }
@@ -64,20 +67,34 @@
   sets a style on it (namely display: none; z-index:-99999999)
   _5hn6 is strictly for facebook
   ------------------------*/
-  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|fancybox|sp_)'){
+  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', regexStrB='(blur)'){
     if(regexStr==='undefined' || regexStr===null){
-    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|fancybox|sp_)', "ig");
+    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', "ig");
     }
     else{
     var regexPatt = new RegExp(regexStr, "ig");
     }
 
+    if(regexStrB==='undefined' || regexStrB===null){
+    var regexPattB = new RegExp('(blur)', "ig");
+    }
+    else{
+    var regexPattB = new RegExp(regexStrB, "ig");
+    }
+
+
     for(let obj of objArr){
+      //modal or veil
       if(obj.className.match(regexPatt)){
-      console.log("butWhyMod: found object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
+      console.log("butWhyMod: found potential modal or modal-related object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       obj.className="dontCare";
       obj.id="dontCare";
+      }
+      //stuff that needs style only removed like filters
+      else if( obj.className.match(regexPattB)){
+      console.log("butWhyMod: found styled object with classname \"" + obj.className + "\". De/Restyling...");
+      obj.setAttribute('style', 'filter: none !important; position: static !important;'); 
       }
     }
   }
@@ -97,9 +114,12 @@
     //runs custom domain pattern modal removals.
     chrome.storage.local.get(null, (item) => {
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
-      if(custDmnPatList.hasOwnProperty(window.location.host)){
-      console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", pattern: " +custDmnPatList[window.location.host]);
-      disableModal(objArr, custDmnPatList[window.location.host]);	
+    var custDmnStyList=item.hasOwnProperty('custDmnStyList')?item.custDmnStyList:"";
+      if(custDmnPatList.hasOwnProperty(window.location.host) || custDmnStyList.hasOwnProperty(window.location.host)){
+      var conslPat=custDmnPatList.hasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
+      conslPat=conslPat + custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
+      console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
+      disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]); 
       }
     });
 
@@ -150,8 +170,7 @@
     chrome.storage.local.set({mnl: true}); 
     }
 
-
-    //gets ignorelist and custom domain modal removal class
+    //gets ignorelist, custom domain modal removal class and custom domain style removal/restyle class
     //also sets defaults if the variables doesn't exist.
   var custList={};
     if(item.hasOwnProperty('custList') === false){
@@ -169,6 +188,15 @@
     }
     else{
     custDmnPatList=item.custDmnPatList;
+    }
+
+  var custDmnStyList={};
+    if(!item.hasOwnProperty('custDmnStyList')){
+    chrome.storage.local.set({custDmnPatList: {}});
+    custDmnStyList={};
+    }
+    else{
+    custDmnStyList=item.custDmnStyList;
     }
 
   var dmn=window.location.host;

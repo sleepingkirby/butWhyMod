@@ -58,6 +58,9 @@ function startListen(){
       var custListObj=txtArToObj(custList);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
+      var custDmnSty=document.getElementsByClassName('custDmnStyTxt')[0].value;
+      var custDmnStyObj=txtArToObj(custDmnSty);
+
       var notif=document.getElementsByClassName('notify')[0];
       notif.id='';
       notif.innerHTML='';
@@ -65,8 +68,12 @@ function startListen(){
         //setting custom list
         chrome.storage.local.set({custList: custListObj},saveNotify(notif, 'Ignore List saved.', false ));
 
-        //setting custom domain patter list
+        //setting custom domain pattern list
         chrome.storage.local.set({custDmnPatList: custDmnPatObj}, saveNotify(notif, 'Custom domains and patterns saved.', true ));
+
+        //setting custom domain style patterns list
+        chrome.storage.local.set({custDmnStyList: custDmnStyObj}, saveNotify(notif, 'Custom domains and styled patterns saved.', true ));
+
 
       notif.id='fadeOut';
         notif.addEventListener("animationend", ()=>{
@@ -112,9 +119,20 @@ chrome.storage.local.get(null,(item) => {
     custDmnPatList=item.custDmnPatList;
     }
 
+  var custDmnStyList={};
+    if(!item.hasOwnProperty('custDmnStyList')){
+    chrome.storage.local.set({custDmnStyList: {}});
+    custDmnStyList={};
+    }
+    else{
+    custDmnStyList=item.custDmnStyList;
+    }
+
+
 
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
+ document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);
 });
 
 //running main function
