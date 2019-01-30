@@ -1,0 +1,4 @@
+content   butWhyMod                content/
+locale    butWhyMode  en-US         locale/en-US/
+
+overlay chrome://browser/content/browser.xul  chrome://butWhyMod/content/browserOverlay.xul
