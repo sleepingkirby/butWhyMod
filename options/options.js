@@ -36,6 +36,21 @@ return rtrn;
 
 function saveNotify( obj, str, appnd=false){
 console.log('butWhyMod: ' + str);
+/*
+  if (appnd) { // append to obj DOM
+
+    obj.appendChild(document.createElement('br'));
+
+    obj.appendChild(document.createTextNode(str));
+
+  }
+
+  else{
+
+    obj.textContent = str; // use textContent for strings
+
+  }
+*/
     if(appnd){
     obj.innerHTML= obj.innerHTML + '<br>' + str;
     }

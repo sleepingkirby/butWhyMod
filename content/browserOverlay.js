@@ -1,12 +1,14 @@
 /**
  * butWhyMod namespace.
  */
+//writes to both browser and error console.
+//Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService).logStringMessage("test");
 if ("undefined" == typeof(butWhyMod)) {
   var butWhyMod = {
 
     init : function(){
     console.log("==============>> on init");
-document.documentElement.setAttribute('style', 'border: 8px solid blue;');
+    console.log(document.documentElement.innerHTML);
     },
     sayHello : function(aEvent) {
     }
@@ -16,7 +18,8 @@ document.documentElement.setAttribute('style', 'border: 8px solid blue;');
 };
 
 gBrowser.addEventListener("load", function () {
-  document.documentElement.setAttribute('style', 'border: 8px solid red;');
+    console.log("==============>> on event");
+    console.log(document.documentElement.innerHTML);
+    console.log(gBrowser.selectedTab.body.innerHTML);
 }, true);
 
-  document.documentElement.setAttribute('style', 'border: 8px solid green;');
