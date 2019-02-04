@@ -5,12 +5,15 @@ var newIn="";
 }
 
 //convert text lines to obj
-function txtArToObj(str){
+function txtArToObj(str, ign=false){
 var lines=str.split("\n");
 var rtrn={};
   for(let item of lines){
     if(item !== "\n"){
     var objs=item.split('|');
+      if(ign){
+        objs[1]=objs[0];
+      }  
     rtrn[objs[0]]=objs[1];
     }
   }
@@ -18,17 +21,19 @@ return rtrn;
 }
 
 //convert object to text lines
-function objToTxtAr(obj){
+function objToTxtAr(obj, ign=false){
 var rtrn="";
 var nl="";
   for(var key in obj){
-    if(obj[key] === undefined || obj[key] === null){
-    rtrn+=nl+key;
+    if(key){
+      if(ign || obj[key] === undefined || obj[key] === null){
+      rtrn+=nl+key;
+      }
+      else{
+      rtrn+=nl+key+"|"+obj[key];
+      }
+    nl="\n";
     }
-    else{
-    rtrn+=nl+key+"|"+obj[key];
-    }
-  nl="\n";
   }
 return rtrn;
 }
@@ -37,10 +42,15 @@ return rtrn;
 function saveNotify( obj, str, appnd=false){
 console.log('butWhyMod: ' + str);
     if(appnd){
-    obj.innerHTML= obj.innerHTML + '<br>' + str;
+      obj.appendChild(document.createElement("br")); 
+      obj.appendChild(document.createTextNode(str)); 
     }
     else{
-    obj.innerHTML=str;
+      //clear all children
+      while(obj.firstChild){
+        obj.firstChild.remove();
+      }
+      obj.appendChild(document.createTextNode(str)); 
     }
 }
 
@@ -51,7 +61,7 @@ function startListen(){
       case 'savePref':
       //grab settings, parse and enter into storage.local
       var custList=document.getElementsByClassName('custListTxt')[0].value;
-      var custListObj=txtArToObj(custList);
+      var custListObj=txtArToObj(custList, true);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
       var custDmnSty=document.getElementsByClassName('custDmnStyTxt')[0].value;
@@ -96,7 +106,7 @@ function startListen(){
 
 //getting saved settings
 browser.storage.local.get().then((item) => {
- document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList);
+ document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList, true);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(item.custDmnPatList);
  document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(item.custDmnStyList);
 })

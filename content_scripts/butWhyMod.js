@@ -50,7 +50,7 @@
   -----------------------*/
   function disableBackdrop(objArr){
     for(let obj of objArr){
-      if(obj.className.match(/(backdrop|veil|lightbox)/ig)){
+      if(obj.className.match(/(backdrop|veil|lightbox|shroud)/ig)){
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       }
     }
