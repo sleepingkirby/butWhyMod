@@ -133,8 +133,6 @@ chrome.storage.local.get(null,(item) => {
     custDmnStyList=item.custDmnStyList;
     }
 
-
-
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
  document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);

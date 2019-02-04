@@ -192,7 +192,7 @@
 
   var custDmnStyList={};
     if(!item.hasOwnProperty('custDmnStyList')){
-    chrome.storage.local.set({custDmnPatList: {}});
+    chrome.storage.local.set({custDmnStyList: {}});
     custDmnStyList={};
     }
     else{
