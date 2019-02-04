@@ -50,7 +50,7 @@ function startListen(){
             notif.id=''; //resets the notification area animation
             browser.storage.local.set({custList: newCL}).then(()=>{
             console.log('butWhyMod: added host to custom List ' + host);
-            notif.innerHTML='\'' + host + '\' added to white list.';
+            notif.textContent='\'' + host + '\' added to white list.';
             notif.id='fadeOut';
             notif.addEventListener("animationend", ()=>{
             notif.id='';
