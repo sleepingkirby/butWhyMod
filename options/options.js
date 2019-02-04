@@ -41,10 +41,15 @@ return rtrn;
 function saveNotify( obj, str, appnd=false){
 console.log('butWhyMod: ' + str);
     if(appnd){
-    obj.innerHTML= obj.innerHTML + '<br>' + str;
+    obj.appendChild(document.createElement("br")); 
+    obj.appendChild(document.createTextNode(str)); 
     }
     else{
-    obj.innerHTML=str;
+      //clear all children
+      while(obj.firstChild){
+        obj.firstChild.remove();
+      }
+    obj.appendChild(document.createTextNode(str)); 
     }
 }
 
