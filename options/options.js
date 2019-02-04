@@ -5,14 +5,14 @@ var newIn="";
 }
 
 //convert text lines to obj
-function txtArToObj(str, ign=false){
+function txtArToObj(str){
 var lines=str.split("\n");
 var rtrn={};
   for(let item of lines){
     if(item !== "\n"){
     var objs=item.split('|');
-      if(ign){
-        objs[1]=objs[0];
+      if(objs[1]===undefined){
+        objs[1]=null;
       }  
     rtrn[objs[0]]=objs[1];
     }
@@ -21,12 +21,12 @@ return rtrn;
 }
 
 //convert object to text lines
-function objToTxtAr(obj, ign=false){
+function objToTxtAr(obj){
 var rtrn="";
 var nl="";
   for(var key in obj){
     if(key){
-      if(ign || obj[key] === undefined || obj[key] === null){
+      if(obj[key] === undefined || obj[key] === null){
       rtrn+=nl+key;
       }
       else{
@@ -61,7 +61,7 @@ function startListen(){
       case 'savePref':
       //grab settings, parse and enter into storage.local
       var custList=document.getElementsByClassName('custListTxt')[0].value;
-      var custListObj=txtArToObj(custList, true);
+      var custListObj=txtArToObj(custList);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
       var custDmnSty=document.getElementsByClassName('custDmnStyTxt')[0].value;
@@ -106,7 +106,7 @@ function startListen(){
 
 //getting saved settings
 browser.storage.local.get().then((item) => {
- document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList, true);
+ document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(item.custList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(item.custDmnPatList);
  document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(item.custDmnStyList);
 })
