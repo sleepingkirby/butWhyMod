@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://butWhyMod/content/styles.css" type="text/css"?>
+
+
+<!DOCTYPE overlay >
+<overlay id="stockwatcher2-overlay"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript"
+  src="chrome://butWhyMod/content/browser.js"/>
+  <script>
+  console.log(butWhyModObj);
+  </script>
+
+<toolbar id="nav-bar">
+  <toolbarbutton id="butWhyMod-toolbar-button" type="menu" label="butWhyMod" image="chrome://butWhyMod/content/icons/icon-32.png">
+    <menupopup>
+      <vbox pack="end">
+      <hbox>
+        <spacer flex="1" />
+        <button label="disable modals" oncommand="alert('You pressed me!');"/>
+      </hbox>
+      <hbox>
+        <spacer flex="1" />
+        <button label="white list" oncommand="alert('You pressed me!');"/>
+      </hbox>
+      <hbox>
+        <spacer flex="1" />
+        <button label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label='auto prune'"/>
+      </hbox>
+      <hbox>
+        <spacer flex="1" />
+        <menuitem label="settings" style="color: blue; font-size: 8pt;" oncommand="window.open('chrome://butwhymod/content/options.xul', 'butWhyMod Options', 'toolbars=0,width=431,height=385');" />
+      </hbox>
+      <hbox>
+        <spacer flex="1" />
+        <menuitem label="donate" style="color: blue; font-size: 8pt;" oncommand="window.open('https://patreon.com/WKLaume', '');" />
+      </hbox>
+      </vbox>
+    </menupopup>
+  </toolbarbutton>
+</toolbar>
+
+</overlay>
