@@ -7,29 +7,64 @@
 var butWhyModObj = {
   curWin: null,
   prefMng: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
+  log:function(str){
+  Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService).logStringMessage(str);
+  },
   init : function(){
   console.log("butWhyMod: Starting butWhyMod.");
 
     //if( typeof gBrowser!='undefined' && gBrowser != null && gBrowser.hasOwnProperty('getBrowswerForTab')){
     if( typeof gBrowser!='undefined' && gBrowser != null){
-    console.log(gBrowser.hasOwnProperty('getBrowswerForTab'));
       gBrowser.addEventListener("load", function () {
-      if(gBrowser.hasOwnProperty('getBrowswerForTab')){
-        var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
-        document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
 
-          //get and save the window being used
-          this.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
+      var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
+      document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
 
-            this.curWin.addEventListener("load", function (){
-            //console.log(newTabBrowser.contentDocument.readyState);
-            //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
-            //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
+        //get and save the window being used
+        butWhyModObj.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
+          //console.log(newTabBrowser.contentDocument.readyState);
+          //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
+          //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
+          var item={};
+          item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
+          item['custDmnPatList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+          item['custDmnStyList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
+          item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+          var dmn='';
 
+          try{
+          dmn=butWhyModObj.curWin.currentURI.host;
+          }
+          catch(err){
+          butWhyModObj.log(err);
+          //this happens when at a page with no host. Pages like about:config or about:addons. In case, just do nothing.
+          return null;
+          }
 
-            }, true);
-        }, true);
-      }
+            if(item['custList'].hasOwnProperty(dmn)){
+            console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
+            return null;
+            }
+
+          /*
+          if(item['mnl'] === false){
+          console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
+          console.log('butWhyMod: Preliminary modal removal...');
+          pageDone();
+          console.log('butWhyMod: adding event listener for removal on page complete.');
+          document.addEventListener('readystatechange', event => {
+            if (event.target.readyState === 'complete') {
+            console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + document.readyState);
+            pageDone();
+            }
+          });
+          delayRun();
+          }
+          else{
+          console.log('butWhyMod: Manual pruning set. No modal removal.');
+          }
+          */
+      }, true);
     }
   },
   testfunc: function(){
@@ -67,7 +102,7 @@ var butWhyModObj = {
   //gets all the settings for the options page.
   var rtrn={};
     rtrn['custList']=this.objToTxtAr(JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custList')));
-    rtrn['custDmnPatLst']=this.objToTxtAr(JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList')));
+    rtrn['custDmnPatList']=this.objToTxtAr(JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList')));
     rtrn['custDmnStyList']=this.objToTxtAr(JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList')));
   return rtrn;
   },
@@ -100,8 +135,6 @@ var butWhyModObj = {
     else{
     mnlBool=btBool;
     }
-  console.log("===getMnlTxt==>>");
-  console.log(mnlBool);
   var mnlLbl={false: 'auto prune', true: 'manual prune'};
   return mnlLbl[mnlBool];
   },
@@ -120,6 +153,80 @@ var butWhyModObj = {
   this.prefMng.setBoolPref('extensions.butWhyMod.mnl', mnlBool);
   var lblStr=this.getMnlTxt(mnlBool);
   return lblStr;
+  },
+  sleep:function(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+  setBody: function(){
+  var prevStyle=document.documentElement.getAttribute('style')?document.documentElement.getAttribute('style'):'';
+  document.documentElement.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+
+  prevStyle=document.body.getAttribute('style')?document.body.getAttribute('style'):'';
+  document.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+    if(document.body.className.match(/modal/ig)){
+    //document.body.className="";
+    }
+  },
+  disableBackdrop: function(objArr){
+    for(let obj of objArr){
+      if(obj.className.match(/(backdrop|veil|lightbox)/ig)){
+      obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
+      }
+    }
+  },
+  disableModal: function(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', regexStrB='(blur)'){
+    if(regexStr==='undefined' || regexStr===null){
+    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', "ig");
+    }
+    else{
+    var regexPatt = new RegExp(regexStr, "ig");
+    }
+
+    if(regexStrB==='undefined' || regexStrB===null){
+    var regexPattB = new RegExp('(blur)', "ig");
+    }
+    else{
+    var regexPattB = new RegExp(regexStrB, "ig");
+    }
+
+
+
+    for(let obj of objArr){
+      //modal or veil
+      if(obj.className.match(regexPatt)){
+      console.log("butWhyMod: found potential modal or modal-related object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
+      obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
+      obj.className="dontCare";
+      obj.id="dontCare";
+      }
+      //stuff that needs style only removed like filters
+      else if( obj.className.match(regexPattB)){
+      console.log("butWhyMod: found styled object with classname \"" + obj.className + "\". De/Restyling...");
+      obj.setAttribute('style', 'filter: none !important; position: static !important;');
+      }
+    }
+  },
+  pageDone:function(){
+  console.log("butWhyMod: Document status: " +  document.readyState);
+    var objArr = document.getElementsByTagName("div");
+    console.log("butWhyMod: starting butWhyMod. " + objArr.length + " objects to go through");
+
+    setBody();
+
+    //runs custom domain pattern modal removals.
+    browser.storage.local.get().then((item) => {
+    var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
+    var custDmnStyList=item.hasOwnProperty('custDmnStyList')?item.custDmnStyList:"";
+      if(custDmnPatList.hasOwnProperty(window.location.host) || custDmnStyList.hasOwnProperty(window.location.host)){
+      var conslPat=custDmnPatList.hasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
+      conslPat=conslPat + custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
+      console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
+      disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]);
+      }
+    });
+
+    //standard modal disable
+    disableModal(objArr);
   }
 }
 

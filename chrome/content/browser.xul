@@ -40,17 +40,4 @@
   </toolbarbutton>
 </toolbar>
 
-  <script>
-  console.log("============ getMnlTxt =========>>");
-  console.log(butWhyModObj.getMnlTxt());
-  console.log("=========== butWhyModMnlBt ========>>");
-  //console.log(document.getElementById('butWhyModMnlBt'));
-  console.log(gBrowser.innerHTML);
-  console.log(window.innerHTML);
-  console.log(document.innerHTML);
-
-  </script>
-
-
-
 </overlay>
