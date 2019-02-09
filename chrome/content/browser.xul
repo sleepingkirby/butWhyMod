@@ -10,9 +10,6 @@
 
 <script type="application/x-javascript"
   src="chrome://butWhyMod/content/browser.js"/>
-  <script>
-  console.log(butWhyModObj);
-  </script>
 
 <toolbar id="nav-bar">
   <toolbarbutton id="butWhyMod-toolbar-button" type="menu" label="butWhyMod" image="chrome://butWhyMod/content/icons/icon-32.png">
@@ -28,7 +25,7 @@
       </hbox>
       <hbox>
         <spacer flex="1" />
-        <button label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label='auto prune'"/>
+        <button id="butWhyModMnlBt" label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
@@ -42,5 +39,18 @@
     </menupopup>
   </toolbarbutton>
 </toolbar>
+
+  <script>
+  console.log("============ getMnlTxt =========>>");
+  console.log(butWhyModObj.getMnlTxt());
+  console.log("=========== butWhyModMnlBt ========>>");
+  //console.log(document.getElementById('butWhyModMnlBt'));
+  console.log(gBrowser.innerHTML);
+  console.log(window.innerHTML);
+  console.log(document.innerHTML);
+
+  </script>
+
+
 
 </overlay>

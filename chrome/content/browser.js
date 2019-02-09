@@ -8,28 +8,28 @@ var butWhyModObj = {
   curWin: null,
   prefMng: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
   init : function(){
-  //get settings
-  //if no settings exist, set defaults.
   console.log("butWhyMod: Starting butWhyMod.");
 
-    //this.addToToolBar("nav-bar", "butWhyMod-toolbar");
-    // The "addon-bar" is available since Firefox 4
-    //this.installButton("addon-bar", "my-extension-addon-bar-button");
-
-    if( typeof gBrowser!='undefined' && gBrowser != null && gBrowser.hasOwnProperty('getBrowswerForTab')){
+    //if( typeof gBrowser!='undefined' && gBrowser != null && gBrowser.hasOwnProperty('getBrowswerForTab')){
+    if( typeof gBrowser!='undefined' && gBrowser != null){
     console.log(gBrowser.hasOwnProperty('getBrowswerForTab'));
       gBrowser.addEventListener("load", function () {
-        console.log("==============>> on event");
+      if(gBrowser.hasOwnProperty('getBrowswerForTab')){
+        var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
+        document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
 
-        //get and save the window being used
-        this.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
+          //get and save the window being used
+          this.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
 
-          this.curWin.addEventListener("load", function (){
-          //console.log(newTabBrowser.contentDocument.readyState);
-          //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
-          //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
-          }, true);
-      }, true);
+            this.curWin.addEventListener("load", function (){
+            //console.log(newTabBrowser.contentDocument.readyState);
+            //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
+            //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
+
+
+            }, true);
+        }, true);
+      }
     }
   },
   testfunc: function(){
@@ -87,6 +87,39 @@ var butWhyModObj = {
     this.prefMng.setCharPref('extensions.butWhyMod.custList', custList);
     this.prefMng.setCharPref('extensions.butWhyMod.custDmnPatList', custDmnPatList);
     this.prefMng.setCharPref('extensions.butWhyMod.custDmnStyList', custDmnStyList);
+  },
+  getMnlTxt:function(btBool, id){
+  //sets the manual/auto prune button display in the toolbar button menu.
+    if( typeof id === undefined || id === null){
+    id='butWhyModMnlBt';
+    }
+    var mnlBool=true;
+    if(typeof btBool === undefined || btBool === null || btBool === undefined){
+    mnlBool=this.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+    }
+    else{
+    mnlBool=btBool;
+    }
+  console.log("===getMnlTxt==>>");
+  console.log(mnlBool);
+  var mnlLbl={false: 'auto prune', true: 'manual prune'};
+  return mnlLbl[mnlBool];
+  },
+  flipMnlBt:function(){
+  // flip the mnl boolean and sets the auto prune/manual prune button
+  var mnlBool=this.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+  //grabs the current setting. Corrects the setting if incorrect. Flips the value.
+    if(typeof mnlBool===undefined || mnlBool===null|| !mnlBool || mnlBool===undefined){
+    mnlBool=false;
+    }
+    else{
+    mnlBool=true;
+    }
+
+  mnlBool=!mnlBool;
+  this.prefMng.setBoolPref('extensions.butWhyMod.mnl', mnlBool);
+  var lblStr=this.getMnlTxt(mnlBool);
+  return lblStr;
   }
 }
 
