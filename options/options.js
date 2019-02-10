@@ -10,7 +10,7 @@ var lines=str.split("\n");
 var rtrn={};
   for(let item of lines){
     console.log(item);
-    if(item !== "\n"){
+    if(tem && item !== "\n"){
     var objs=item.split('|');
       if(objs[1] === undefined){
       objs[1]=null;
