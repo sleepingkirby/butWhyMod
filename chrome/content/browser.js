@@ -41,29 +41,28 @@ var butWhyModObj = {
           return null;
           }
 
-            if(item['custList'].hasOwnProperty(dmn)){
-            console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
-            return null;
-            }
+          if(item['custList'].hasOwnProperty(dmn)){
+          console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
+          return null;
+          }
 
-          /*
           if(item['mnl'] === false){
           console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
           console.log('butWhyMod: Preliminary modal removal...');
-          pageDone();
+          butWhyModObj.pageDone(dmn);
           console.log('butWhyMod: adding event listener for removal on page complete.');
-          document.addEventListener('readystatechange', event => {
+          butWhyModObj.curWin.addEventListener('readystatechange', event => {
             if (event.target.readyState === 'complete') {
-            console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + document.readyState);
+            console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + event.target.readyState);
             pageDone();
             }
           });
-          delayRun();
+
+          butWhyModObj.delayRun();
           }
           else{
           console.log('butWhyMod: Manual pruning set. No modal removal.');
           }
-          */
       }, true);
     }
   },
@@ -79,7 +78,7 @@ var butWhyModObj = {
         if(objs[1] === undefined){
         objs[1]=null;
         }
-      rtrn[objs[0]]=objs[1];
+        rtrn[objs[0]]=objs[1];
       }
     }
   return rtrn;
@@ -158,12 +157,13 @@ var butWhyModObj = {
     return new Promise(resolve => setTimeout(resolve, ms));
   },
   setBody: function(){
-  var prevStyle=document.documentElement.getAttribute('style')?document.documentElement.getAttribute('style'):'';
-  document.documentElement.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
 
-  prevStyle=document.body.getAttribute('style')?document.body.getAttribute('style'):'';
-  document.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
-    if(document.body.className.match(/modal/ig)){
+  var prevStyle=this.curWin.contentDocument.documentElement.getAttribute('style')?this.curWin.contentDocument.documentElement.getAttribute('style'):'';
+  this.curWin.contentDocument.documentElement.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+
+  prevStyle=this.curWin.contentDocument.body.getAttribute('style')?this.curWin.contentDocument.body.getAttribute('style'):'';
+  this.curWin.contentDocument.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+    if(this.curWin.contentDocument.body.className.match(/modal/ig)){
     //document.body.className="";
     }
   },
@@ -206,27 +206,47 @@ var butWhyModObj = {
       }
     }
   },
-  pageDone:function(){
-  console.log("butWhyMod: Document status: " +  document.readyState);
-    var objArr = document.getElementsByTagName("div");
-    console.log("butWhyMod: starting butWhyMod. " + objArr.length + " objects to go through");
+  sleep:function (ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
+  delayRun:async function(secs=6500) {
 
-    setBody();
+    console.log('butWhyMod: Setting time for delayed modal removal for ' + secs + " milliseconds");
+    await sleep(secs);
+    console.log('butWhyMod: Time\'s up. Running delayed modal removal.');
+    pageDone();
+  },
+  pageDone:function(){
+
+
+    try{
+    var host=gBrowser.getBrowserForTab(gBrowser.selectedTab).currentURI.host;
+    }
+    catch(err){
+    this.log(err);
+    //this happens when at a page with no host. Pages like about:config or about:addons. In case, just do nothing.
+    return null;
+    }
+
+  console.log("butWhyMod: Document status: " + this.curWin.contentDocument.readyState);
+  var objArr = this.curWin.contentDocument.documentElement.getElementsByTagName("div");
+  console.log("butWhyMod: starting butWhyMod. " + objArr.length + " objects to go through");
+
+  this.setBody();
 
     //runs custom domain pattern modal removals.
-    browser.storage.local.get().then((item) => {
-    var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
-    var custDmnStyList=item.hasOwnProperty('custDmnStyList')?item.custDmnStyList:"";
-      if(custDmnPatList.hasOwnProperty(window.location.host) || custDmnStyList.hasOwnProperty(window.location.host)){
-      var conslPat=custDmnPatList.hasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
-      conslPat=conslPat + custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
-      console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
-      disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]);
-      }
-    });
+  var custDmnPatList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+  var custDmnStyList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+    if(custDmnPatList.hasOwnProperty(host) || custDmnStyList.hasOwnProperty(host)){
+    var conslPat=custDmnPatList.hasOwnProperty(host)?"modal pattern: \"" + custDmnPatList[host] + "\" ":'';
+    conslPat=conslPat + custDmnStyList.hasOwnProperty(host)?" style pattern: \"" + custDmnStyList[host] + "\" ":'';
+    console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + host + ", " + conslPat);
+    this.disableModal(objArr, custDmnPatList[host], custDmnStyList[host]);
+    }
 
-    //standard modal disable
-    disableModal(objArr);
+  //standard modal disable
+  this.disableModal(objArr);
+ 
   }
 }
 

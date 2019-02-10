@@ -41,8 +41,8 @@
   <script>
     var prefs=butWhyModObj.getPrefs();
     document.getElementById('butWhyModCustListTB').value=prefs['custList'];
-    document.getElementById('butWhyModCustDmnPatListTB').value=prefs['custDmnPatLst'];
-    document.getElementById('butWhyModCustDmnStyListTB').value=prefs['custDmnStyLst'];
+    document.getElementById('butWhyModCustDmnPatListTB').value=prefs['custDmnPatList'];
+    document.getElementById('butWhyModCustDmnStyListTB').value=prefs['custDmnStyList'];
   </script>
 </prefpane>
 
