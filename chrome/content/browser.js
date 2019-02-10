@@ -22,14 +22,39 @@ var butWhyModObj = {
 
         //get and save the window being used
         butWhyModObj.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
-          //console.log(newTabBrowser.contentDocument.readyState);
-          //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
-          //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
           var item={};
+
+          //----------------------grabbing default settings or setting defaults  because defaults.js doesn't do that apparently---------------
+          try{
           item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
+          }
+          catch(err){
+          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custList', '{"mail.google.com":null,"twitter.com":null}');
+          }
+          
+          try{
           item['custDmnPatList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+          }
+          catch(err){
+          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custDmnPatList', '{"www.facebook.com":"_5hn6"}');
+          }
+          
+          try{
           item['custDmnStyList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
+          }
+          catch(err){
+          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custDmnStyList', '{}');
+          }
+
+          try{
           item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+          }
+          catch(err){
+          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.mnl', true);
+          }          
+
+
+          //------------------------ actual remove code` ------------------
           var dmn='';
 
           try{
@@ -54,7 +79,7 @@ var butWhyModObj = {
           butWhyModObj.curWin.addEventListener('readystatechange', event => {
             if (event.target.readyState === 'complete') {
             console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + event.target.readyState);
-            pageDone();
+            butWhyModObj.pageDone();
             }
           });
 
@@ -212,13 +237,13 @@ var butWhyModObj = {
   delayRun:async function(secs=6500) {
 
     console.log('butWhyMod: Setting time for delayed modal removal for ' + secs + " milliseconds");
-    await sleep(secs);
+    await this.sleep(secs);
     console.log('butWhyMod: Time\'s up. Running delayed modal removal.');
-    pageDone();
+    this.pageDone();
   },
   pageDone:function(){
 
-
+  this.curWin=gBrowser.getBrowserForTab(gBrowser.selectedTab);
     try{
     var host=gBrowser.getBrowserForTab(gBrowser.selectedTab).currentURI.host;
     }
@@ -236,7 +261,7 @@ var butWhyModObj = {
 
     //runs custom domain pattern modal removals.
   var custDmnPatList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
-  var custDmnStyList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+  var custDmnStyList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
     if(custDmnPatList.hasOwnProperty(host) || custDmnStyList.hasOwnProperty(host)){
     var conslPat=custDmnPatList.hasOwnProperty(host)?"modal pattern: \"" + custDmnPatList[host] + "\" ":'';
     conslPat=conslPat + custDmnStyList.hasOwnProperty(host)?" style pattern: \"" + custDmnStyList[host] + "\" ":'';
@@ -247,6 +272,14 @@ var butWhyModObj = {
   //standard modal disable
   this.disableModal(objArr);
  
+  },
+  whiteList:function(){
+  var ignList=JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custList'));
+  this.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
+  var dmn=this.curWin.currentURI.host;
+    if(dmn){
+    ignList[dmn]=null;
+    }
   }
 }
 

@@ -17,11 +17,11 @@
       <vbox pack="end">
       <hbox>
         <spacer flex="1" />
-        <button label="disable modals" oncommand="alert('You pressed me!');"/>
+        <button label="disable modals" oncommand="butWhyModObj.pageDone();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
-        <button label="white list" oncommand="alert('You pressed me!');"/>
+        <button label="white list" oncommand="butWhyModObj.whiteList();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
