@@ -25,6 +25,12 @@ var butWhyModObj = {
           var item={};
 
           //----------------------grabbing default settings or setting defaults  because defaults.js doesn't do that apparently---------------
+
+          item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+          item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
+          item['custDmnPatList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
+          item['custDmnStyList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
+/*
           try{
           item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
           }
@@ -52,7 +58,7 @@ var butWhyModObj = {
           catch(err){
           butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.mnl', true);
           }          
-
+*/
 
           //------------------------ actual remove cal ------------------
           var dmn='';
@@ -98,7 +104,7 @@ var butWhyModObj = {
   var lines=str.split("\n");
   var rtrn={};
     for(let item of lines){
-      if(item !== "\n"){
+      if(item && item !== "\n" && item.length > 0){
       var objs=item.split('|');
         if(objs[1] === undefined){
         objs[1]=null;
