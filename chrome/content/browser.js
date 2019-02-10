@@ -11,7 +11,6 @@ var butWhyModObj = {
   Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService).logStringMessage(str);
   },
   init : function(){
-  console.log("butWhyMod: Starting butWhyMod.");
 
     //if( typeof gBrowser!='undefined' && gBrowser != null && gBrowser.hasOwnProperty('getBrowswerForTab')){
     if( typeof gBrowser!='undefined' && gBrowser != null){
