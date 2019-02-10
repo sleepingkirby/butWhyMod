@@ -54,7 +54,7 @@ var butWhyModObj = {
           }          
 
 
-          //------------------------ actual remove code` ------------------
+          //------------------------ actual remove cal ------------------
           var dmn='';
 
           try{
