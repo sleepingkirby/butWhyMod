@@ -9,7 +9,7 @@ function txtArToObj(str){
 var lines=str.split("\n");
 var rtrn={};
   for(let item of lines){
-    if(item !== "\n"){
+    if(item && item !== "\n"){
     var objs=item.split('|');
       if(objs[1]===undefined){
         objs[1]=null;
