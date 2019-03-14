@@ -23,43 +23,14 @@ var butWhyModObj = {
         butWhyModObj.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
           var item={};
 
-          //----------------------grabbing default settings or setting defaults  because defaults.js doesn't do that apparently---------------
 
           item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
           item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
           item['custDmnPatList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
           item['custDmnStyList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
-/*
-          try{
-          item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
-          }
-          catch(err){
-          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custList', '{"mail.google.com":null,"twitter.com":null}');
-          }
-          
-          try{
-          item['custDmnPatList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnPatList'));
-          }
-          catch(err){
-          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custDmnPatList', '{"www.facebook.com":"_5hn6"}');
-          }
-          
-          try{
-          item['custDmnStyList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
-          }
-          catch(err){
-          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.custDmnStyList', '{}');
-          }
 
-          try{
-          item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
-          }
-          catch(err){
-          butWhyModObj.prefMng.setCharPref('extensions.butWhyMod.mnl', true);
-          }          
-*/
 
-          //------------------------ actual remove cal ------------------
+          //------------------------ actual removal ------------------
           var dmn='';
 
           try{
@@ -282,8 +253,11 @@ var butWhyModObj = {
   var ignList=JSON.parse(this.prefMng.getCharPref('extensions.butWhyMod.custList'));
   this.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
   var dmn=this.curWin.currentURI.host;
+  console.log("Adding white list domain: "+dmn);
     if(dmn){
     ignList[dmn]=null;
+    ignList=JSON.stringify(ignList);
+    this.prefMng.setCharPref('extensions.butWhyMod.custList', ignList);
     }
   }
 }
