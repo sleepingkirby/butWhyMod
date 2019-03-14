@@ -7,14 +7,8 @@
 
     <em:id>{c1b77ba2-55b6-40bd-9bd7-9789e466c3fe}</em:id>
     <em:name>butWhyMod</em:name>
-    <em:description>But why modals? 
-Attempts to remove modals for the webpage. Allows for whitelist/ignore list of hosts that you don't want to disable modals on. Also allows for custom domain and patterns list. Also can turn off automatic removal and disable modals on a per-page basis (set to off by default as per web browser security policy). *Please be aware that some websites requires modals to work properly and not all modals are bad. Please configure to apply on the pages that you truly want this on.*Modals are those in page pop-up windows. Those pop up windows aren't their own window or alert window. This tries to remove all of them. Annoyed with pages asking you to sign up with newsletters? Hate it facebook has a big annoying window to ask you to sign in when you just want to look at a post? Tired to being forced to click "agree" in a terms and conditions popup so you can view a page? Me too. Got so tired of it I took time to make this.
-
-Please be aware that some pages/web app require modals to function.
-
-The source is found here:
-https://github.com/sleepingkirby/butWhyMod
-</em:description>
+    <em:description>Attempts to remove modals (in webpage window pop ups) and it's blur's/veils for all webpages
+    </em:description>
     <em:version>1.4</em:version>
     <em:type>2</em:type>
     
