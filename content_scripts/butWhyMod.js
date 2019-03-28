@@ -85,8 +85,12 @@
 
     for(let obj of objArr){
       //modal or veil
-      if(obj.className.match(regexPatt) || obj.id.match(regexPatt)){
-      console.log("butWhyMod: found potential modal or modal-related object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
+        var classN=obj.className.match(regexPatt);
+        var idN=obj.id.match(regexPatt);
+      if(classN || idN){
+        var idClass=classN?"class name":"id name";
+        var objname=idClass=="class name"?obj.className:obj.id;
+      console.log("butWhyMod: found potential modal or modal-related object with " + idClass + " \"" + objname + "\". Don't like it. Making it go away...");
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       obj.className="dontCare";
       obj.id="dontCare";
