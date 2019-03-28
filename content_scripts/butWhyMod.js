@@ -67,9 +67,9 @@
   sets a style on it (namely display: none; z-index:-99999999)
   _5hn6 is strictly for facebook
   ------------------------*/
-  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', regexStrB='(blur)'){
+  function disableModal(objArr, regexStr='(modal|backdrop|alert|cookie|lightbox|veil|fancybox|social-connect|banner|sp_)', regexStrB='(blur)'){
     if(regexStr==='undefined' || regexStr===null){
-    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|veil|fancybox|sp_)', "ig");
+    var regexPatt = new RegExp('(modal|backdrop|alert|cookie|lightbox|veil|fancybox|social-connect|banner|sp_)', "ig");
     }
     else{
     var regexPatt = new RegExp(regexStr, "ig");
@@ -85,7 +85,7 @@
 
     for(let obj of objArr){
       //modal or veil
-      if(obj.className.match(regexPatt)){
+      if(obj.className.match(regexPatt) || obj.id.match(regexPatt)){
       console.log("butWhyMod: found potential modal or modal-related object with classname \"" + obj.className + "\". Don't like it. Making it go away...");
       obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
       obj.className="dontCare";
