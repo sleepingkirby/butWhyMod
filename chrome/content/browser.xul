@@ -29,7 +29,7 @@
       </hbox>
       <hbox>
         <spacer flex="1" />
-        <menuitem label="settings" style="color: blue; font-size: 8pt;" oncommand="window.open('chrome://butwhymod/content/options.xul', 'butWhyMod Options', 'toolbars=0,width=440px,height=460px');" />
+        <menuitem label="settings" style="color: blue; font-size: 8pt;" oncommand="butWhyModObj.openCenterWin('chrome://butwhymod/content/options.xul', 'butWhyMod Options')" />
       </hbox>
       <hbox>
         <spacer flex="1" />

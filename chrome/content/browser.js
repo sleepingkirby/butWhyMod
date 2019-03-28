@@ -256,6 +256,15 @@ var butWhyModObj = {
     ignList=JSON.stringify(ignList);
     this.prefMng.setCharPref('extensions.butWhyMod.custList', ignList);
     }
+  },
+  openCenterWin:function(loc, title){
+  //chrome://butwhymod/content/options.xul
+  //butWhyMod Options
+  var width=440;
+  var height=460;
+  var left=(window.screenX)+(window.screen.width/2)-(width/2);
+  var tops=(window.screen.height/2)-(height/2);
+  window.open(loc, title,'toolbars=0,width='+width+'px,height='+height+'px,left='+left+',top='+tops);
   }
 }
 
