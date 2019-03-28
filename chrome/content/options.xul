@@ -5,7 +5,7 @@
 
 <prefwindow id="butWhyMod-options"
      title="butWhyMod Options"
-     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" height="460px" width="440px">
 
 <prefpane id="sw2-stock-pane" label="Stock Settings">
  <script type="application/x-javascript"

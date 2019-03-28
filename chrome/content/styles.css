@@ -2,6 +2,10 @@
 white-space: pre-wrap;
 }
 
+#sw2-stock-pane textbox{
+min-height: 80px;
+}
+
 .btn{
 border: 1px solid #e6e6e6;
 background-color: #31B0D5;

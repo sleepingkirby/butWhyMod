@@ -9,7 +9,7 @@
     <em:name>butWhyMod</em:name>
     <em:description>Attempts to remove modals (in webpage window pop ups) and it's blur's/veils for all webpages
     </em:description>
-    <em:version>1.5</em:version>
+    <em:version>1.6</em:version>
     <em:type>2</em:type>
     
     <em:creator>sleepingkirby</em:creator>
@@ -29,7 +29,6 @@
 
 
     <!-- Basilisk -->
-    <em:targetApplication>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
