@@ -4,28 +4,28 @@
 
 
 <!DOCTYPE overlay >
-<overlay id="stockwatcher2-overlay"
+<overlay id="butWhyMod-overlay"
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 <script type="application/x-javascript"
   src="chrome://butWhyMod/content/browser.js"/>
 
-<toolbar id="nav-bar">
+<toolbarpalette id="BrowserToolbarPalette">
   <toolbarbutton id="butWhyMod-toolbar-button" type="menu" label="butWhyMod" image="chrome://butWhyMod/content/icons/icon-32.png">
     <menupopup>
       <vbox pack="end">
       <hbox>
         <spacer flex="1" />
-        <button label="disable modals" oncommand="butWhyModObj.pageDone();"/>
+        <menuitem label="disable modals" oncommand="butWhyModObj.pageDone();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
-        <button label="white list" oncommand="butWhyModObj.whiteList();"/>
+        <menuitem label="white list" oncommand="butWhyModObj.whiteList();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
-        <button id="butWhyModMnlBt" label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
+        <menuitem id="butWhyModMnlBt" label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
       </hbox>
       <hbox>
         <spacer flex="1" />
@@ -38,6 +38,6 @@
       </vbox>
     </menupopup>
   </toolbarbutton>
-</toolbar>
+</toolbarpalette>
 
 </overlay>
