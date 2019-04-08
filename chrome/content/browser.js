@@ -4,6 +4,8 @@
  * writes to both browser and error console.
  * Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService).logStringMessage("test");
 **/
+
+/*
 var butWhyModObj = {
   curWin: null,
   prefMng: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
@@ -14,7 +16,6 @@ var butWhyModObj = {
 
     console.log( gBrowser);
     console.log("testing");
-/*
     if( typeof gBrowser!='undefined' && gBrowser != null){
       gBrowser.addEventListener("load", function () {
 
@@ -68,7 +69,6 @@ var butWhyModObj = {
           }
       }, true);
     }
-  */
   },
   txtArToObj: function(str){
   var lines=str.split("\n");
@@ -277,7 +277,10 @@ var butWhyModObj = {
 
 
 butWhyModObj.init();
+*/
 
+
+console.log(gBrowser);
 //butWhyModObj.addToToolBar("nav-bar", "butWhyMod-toolbar-button");
 //butWhyModObj.addToToolBar("addon-bar", "butWhyMod-toolbar-button");
 
