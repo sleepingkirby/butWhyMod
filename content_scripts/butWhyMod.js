@@ -205,14 +205,15 @@
 
   var dmn=window.location.host;
     
+ 
+    if(item['mnl'] === false){
+
     //if dmn in custList, do nothing
     if(custList.hasOwnProperty(dmn)){
     console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
     return null;
     } 
 
- 
-    if(item['mnl'] === false){
     console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
     console.log('butWhyMod: Preliminary modal removal...');
     pageDone();
