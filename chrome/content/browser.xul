@@ -12,13 +12,13 @@
   src="chrome://butWhyMod/content/browser.js"/>
 
 <toolbarpalette id="BrowserToolbarPalette">
-  <toolbarbutton id="butWhyMod-toolbar-button" type="menu" label="butWhyMod" image="chrome://butWhyMod/content/icons/icon-32.png">
+  <toolbarbutton id="butWhyMod-toolbar-button" type="menu" label="butWhyMod" image="chrome://butWhyMod/content/icons/icon-16.png">
     <menupopup>
-        <menuitem label="disable modals" oncommand="butWhyModObj.pageDone();"/>
-        <menuitem label="white list" oncommand="butWhyModObj.whiteList();"/>
-        <menuitem id="butWhyModMnlBt" label="manual prune" style="background-color: #FFFFFF;" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
-        <menuitem label="settings" oncommand="butWhyModObj.openCenterWin('chrome://butwhymod/content/options.xul', 'butWhyMod Options')" />
-        <menuitem label="donate" oncommand="window.open('https://patreon.com/WKLaume', '');" />
+        <menuitem label="Disable Modals" oncommand="butWhyModObj.pageDone();"/>
+        <menuitem label="White List" oncommand="butWhyModObj.whiteList();"/>
+        <menuitem id="butWhyModMnlBt" label="Manual Prune" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
+        <menuitem label="Settings" oncommand="butWhyModObj.openCenterWin('chrome://butwhymod/content/options.xul', 'butWhyMod Options')" />
+        <menuitem label="Donate" oncommand="window.open('https://patreon.com/WKLaume', '');" />
     </menupopup>
   </toolbarbutton>
 </toolbarpalette>

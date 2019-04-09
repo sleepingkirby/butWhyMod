@@ -5,7 +5,6 @@
  * Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService).logStringMessage("test");
 **/
 
-/*
 var butWhyModObj = {
   curWin: null,
   prefMng: Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch),
@@ -14,10 +13,16 @@ var butWhyModObj = {
   },
   init : function(){
 
-    console.log( gBrowser);
-    console.log("testing");
-    if( typeof gBrowser!='undefined' && gBrowser != null){
+
+    window.addEventListener("load", function () {
+      if( typeof gBrowser !== 'undefined' && gBrowser !== null){
       gBrowser.addEventListener("load", function () {
+
+      // if the protocol is chrome://, it's a page for the browser internally. Do nothing 
+      if(gBrowser.getBrowserForTab(gBrowser.selectedTab).currentURI.scheme == "chrome"){
+      console.log("butWhyMod: Page is related to browser functions. Doing nothing...");
+      return null;
+      }
 
       var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
       document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
@@ -25,7 +30,6 @@ var butWhyModObj = {
         //get and save the window being used
         butWhyModObj.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
           var item={};
-
 
           item['mnl']=butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');
           item['custList']=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custList'));
@@ -45,22 +49,22 @@ var butWhyModObj = {
           return null;
           }
 
-          if(item['custList'].hasOwnProperty(dmn)){
-          console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
-          return null;
-          }
 
           if(item['mnl'] === false){
+            if(item['custList'].hasOwnProperty(dmn)){
+            console.log('butWhyMod: Current URL\'s domain in ignore list. Not removing modals. ' + dmn);
+            return null;
+            }
           console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
           console.log('butWhyMod: Preliminary modal removal...');
           butWhyModObj.pageDone(dmn);
           console.log('butWhyMod: adding event listener for removal on page complete.');
-          butWhyModObj.curWin.addEventListener('readystatechange', event => {
-            if (event.target.readyState === 'complete') {
-            console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + event.target.readyState);
-            butWhyModObj.pageDone();
-            }
-          });
+            butWhyModObj.curWin.addEventListener('readystatechange', event => {
+              if (event.target.readyState === 'complete') {
+              console.log("butWhyMod: Page done loading. Trying to remove modals. Document state: " + event.target.readyState);
+              butWhyModObj.pageDone();
+              }
+            });
 
           butWhyModObj.delayRun();
           }
@@ -68,7 +72,9 @@ var butWhyModObj = {
           console.log('butWhyMod: Manual pruning set. No modal removal.');
           }
       }, true);
-    }
+      gBrowser.removeEventListener("load", function(){}, true);
+      }
+    }, false);
   },
   txtArToObj: function(str){
   var lines=str.split("\n");
@@ -222,7 +228,7 @@ var butWhyModObj = {
     this.pageDone();
   },
   pageDone:function(){
-
+ 
   this.curWin=gBrowser.getBrowserForTab(gBrowser.selectedTab);
     try{
     var host=gBrowser.getBrowserForTab(gBrowser.selectedTab).currentURI.host;
@@ -277,29 +283,3 @@ var butWhyModObj = {
 
 
 butWhyModObj.init();
-*/
-
-
-console.log(gBrowser);
-//butWhyModObj.addToToolBar("nav-bar", "butWhyMod-toolbar-button");
-//butWhyModObj.addToToolBar("addon-bar", "butWhyMod-toolbar-button");
-
-/*
-
-gBrowser.addEventListener("load", function () {
-    console.log("==============>> on event");
-// Add tab, then make active
-//gBrowser.selectedTab = gBrowser.addTab("http://www.google.com/");
-
-  var newTabBrowser = gBrowser.getBrowserForTab(gBrowser.selectedTab);
-
-  newTabBrowser.addEventListener("load", function (){
-    console.log(newTabBrowser.contentDocument.readyState);
-    //console.log(newTabBrowser.contentDocument.documentElement.innerHTML);
-    //newTabBrowser.contentDocument.documentElement.setAttribute('style', 'border: 9px solid blue;');
-  }, true);
-
-
-}, true);
-*/
-

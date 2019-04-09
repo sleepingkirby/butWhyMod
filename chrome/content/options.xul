@@ -7,7 +7,7 @@
      title="butWhyMod Options"
      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" height="460px" width="440px">
 
-<prefpane id="sw2-stock-pane" label="Stock Settings">
+<prefpane id="butWhyMod-pane" label="ButWhyMod Settings">
  <script type="application/x-javascript"
   src="chrome://butWhyMod/content/browser.js"/>
   <script>
