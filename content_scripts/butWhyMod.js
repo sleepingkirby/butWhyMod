@@ -119,8 +119,9 @@
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
     var custDmnStyList=item.hasOwnProperty('custDmnStyList')?item.custDmnStyList:"";
       if(custDmnPatList.hasOwnProperty(window.location.host) || custDmnStyList.hasOwnProperty(window.location.host)){
-      var conslPat=custDmnPatList.hasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
-      conslPat=conslPat + custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
+      var conslPat=custDmnPatList.hddasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
+      var conslSty =  custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
+      conslPat=conslPat + conslSty;
       console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
       disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]);	
       }
