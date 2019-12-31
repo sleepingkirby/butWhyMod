@@ -3,6 +3,7 @@ html, body {
   font-family: "arial";
   background-color: #ffffff;
   font-size: 10pt;
+  min-width: 150px;
 }
 
 .button {
