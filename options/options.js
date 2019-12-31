@@ -13,9 +13,10 @@ var rtrn={};
     var tokPos=item.indexOf('|');
     var indx=item.substr(0,tokPos);
     var patt=item.substr(tokPos+1,item.length-tokPos);
-      if( tokPos >= 1 && indx.length >= 1 && patt.length>= 1){
-      rtrn[indx]=patt;
+      if( tokPos < 0 || patt.length === 0 || patt == ""){
+      patt=null;
       }
+    rtrn[indx]=patt;
     }
   }
 return rtrn;
