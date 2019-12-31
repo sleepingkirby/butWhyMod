@@ -81,11 +81,14 @@ var butWhyModObj = {
   var rtrn={};
     for(let item of lines){
       if(item && item !== "\n" && item.length > 0){
-      var objs=item.split('|');
-        if(objs[1] === undefined){
-        objs[1]=null;
+      var tokPos=item.indexOf('|');
+      var indx=item.substr(0,tokPos);
+      var patt=item.substr(tokPos+1,item.length-tokPos);
+        if( tokPos < 0 || patt.length === 0 || patt == "" || patt===undefined){
+        patt=null;
+        indx=item;
         }
-        rtrn[objs[0]]=objs[1];
+      rtrn[indx]=patt;
       }
     }
   return rtrn;
@@ -250,7 +253,8 @@ var butWhyModObj = {
   var custDmnStyList=JSON.parse(butWhyModObj.prefMng.getCharPref('extensions.butWhyMod.custDmnStyList'));
     if(custDmnPatList.hasOwnProperty(host) || custDmnStyList.hasOwnProperty(host)){
     var conslPat=custDmnPatList.hasOwnProperty(host)?"modal pattern: \"" + custDmnPatList[host] + "\" ":'';
-    conslPat=conslPat + custDmnStyList.hasOwnProperty(host)?" style pattern: \"" + custDmnStyList[host] + "\" ":'';
+    var conslSty=custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
+    conslPat=conslPat + conslSty;
     console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + host + ", " + conslPat);
     this.disableModal(objArr, custDmnPatList[host], custDmnStyList[host]);
     }
