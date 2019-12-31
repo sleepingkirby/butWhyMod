@@ -10,11 +10,12 @@ var lines=str.split("\n");
 var rtrn={};
   for(let item of lines){
     if(item && item !== "\n"){
-    var objs=item.split('|');
-      if(objs[1] === undefined){
-      objs[1]=null;
+    var tokPos=item.indexOf('|');
+    var indx=item.substr(0,tokPos);
+    var patt=item.substr(tokPos+1,item.length-tokPos);
+      if( tokPos >= 1 && indx.length >= 1 && patt.length>= 1){
+      rtrn[indx]=patt;
       }
-    rtrn[objs[0]]=objs[1];
     }
   }
 return rtrn;
