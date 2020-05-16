@@ -7,11 +7,12 @@ var newIn="";
 //convert text lines to obj
 function txtArToObj(str){
 var lines=str.split("\n");
+console.log(lines);
 var rtrn={};
   for(let item of lines){
     if(item && item !== "\n"){
     var tokPos=item.indexOf('|');
-    var indx=item.substr(0,tokPos);
+    var indx=tokPos>0?item.substr(0,tokPos):item;
     var patt=item.substr(tokPos+1,item.length-tokPos);
       if( tokPos < 0 || patt.length === 0 || patt == ""){
       patt=null;
