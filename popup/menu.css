@@ -26,6 +26,12 @@ text-align: right;
 }
 
 .addToIgn{
+margin-bottom: 3px;
+width: 100%;
+text-align: right;
+}
+
+.addToApply{
 margin-bottom: 10px;
 width: 100%;
 text-align: right;

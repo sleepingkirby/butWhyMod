@@ -7,7 +7,6 @@ var newIn="";
 //convert text lines to obj
 function txtArToObj(str){
 var lines=str.split("\n");
-console.log(lines);
 var rtrn={};
   for(let item of lines){
     if(item && item !== "\n"){
@@ -23,6 +22,29 @@ var rtrn={};
 return rtrn;
 }
 
+//convert text lines to obj
+function txtArToMObj(str){
+var lines=str.split("\n");
+var rtrn={};
+  for(let item of lines){
+    if(item && item !== "\n"){
+    var tokPos=item.indexOf('|');
+    var lTokPos=item.lastIndexOf('|');
+    var indx=tokPos>0?item.substr(0,tokPos):item;
+    var css=(lTokPos>tokPos&&lTokPos<item.length)?item.substr(lTokPos+1):item;
+    var patt=item.substr(tokPos+1,lTokPos-tokPos-1);
+      if( tokPos < 0 || lTokPos<=tokPos ||lTokPos+1 >= item.length|| patt.length === 0 || patt == ""){
+      //do nothing, invalid
+      }
+      else{
+      rtrn[indx]={"patt":patt, "css":css};
+      }
+    }
+  }
+return rtrn;
+}
+
+
 //convert object to text lines
 function objToTxtAr(obj){
 var rtrn="";
@@ -33,6 +55,18 @@ var nl="";
     }
     else{
     rtrn+=nl+key+"|"+obj[key];
+    }
+  nl="\n";
+  }
+return rtrn;
+}
+
+function mObjToTxtAr(obj){
+var rtrn="";
+var nl="";
+  for(var key in obj){
+    if(obj[key].hasOwnProperty("patt")&& obj[key].hasOwnProperty("css")){
+    rtrn+=nl+key+"|"+obj[key].patt+"|"+obj[key].css;
     }
   nl="\n";
   }
@@ -63,10 +97,15 @@ function startListen(){
       //grab settings, parse and enter into storage.local
       var custList=document.getElementsByClassName('custListTxt')[0].value;
       var custListObj=txtArToObj(custList);
+      var custApplyList=document.getElementsByClassName('custApplyListTxt')[0].value;
+      var custApplyListObj=txtArToObj(custApplyList);
       var custDmnPat=document.getElementsByClassName('custDmnPatTxt')[0].value;
       var custDmnPatObj=txtArToObj(custDmnPat);
       var custDmnSty=document.getElementsByClassName('custDmnStyTxt')[0].value;
       var custDmnStyObj=txtArToObj(custDmnSty);
+      var custDmnStyCSS=document.getElementsByClassName('custDmnStyCSSTxt')[0].value;
+      var custDmnStyCSSObj=txtArToMObj(custDmnStyCSS);
+
 
       var notif=document.getElementsByClassName('notify')[0];
       notif.id='';
@@ -75,11 +114,18 @@ function startListen(){
         //setting custom list
         chrome.storage.local.set({custList: custListObj},saveNotify(notif, 'Ignore List saved.', false ));
 
+        //setting the apply list
+        chrome.storage.local.set({custApplyList: custApplyListObj},saveNotify(notif, 'Apply List saved.', false ));
+
         //setting custom domain pattern list
         chrome.storage.local.set({custDmnPatList: custDmnPatObj}, saveNotify(notif, 'Custom domains and patterns saved.', true ));
 
         //setting custom domain style patterns list
         chrome.storage.local.set({custDmnStyList: custDmnStyObj}, saveNotify(notif, 'Custom domains and styled patterns saved.', true ));
+
+        //setting list to apply custom css
+        chrome.storage.local.set({custDmnStyCSSList: custDmnStyCSSObj}, saveNotify(notif, 'Custom domains and applied css for patterns saved', true ));
+
 
 
       notif.id='fadeOut';
@@ -117,6 +163,15 @@ chrome.storage.local.get(null,(item) => {
     custList=item.custList;
     }
 
+  var custApplyList={};
+    if(item.hasOwnProperty('custApplyList') === false){
+      chrome.storage.local.set({custApplyList: {}});
+    custList={ };
+    }
+    else{
+    custApplyList=item.custApplyList;
+    }
+
   var custDmnPatList={};
     if(!item.hasOwnProperty('custDmnPatList')){
     chrome.storage.local.set({custDmnPatList: {'www.facebook.com':'_5hn6'}});
@@ -135,9 +190,21 @@ chrome.storage.local.get(null,(item) => {
     custDmnStyList=item.custDmnStyList;
     }
 
+  var custDmnStyCSSList={};
+    if(!item.hasOwnProperty('custDmnStyCSSList')){
+    chrome.storage.local.set({custDmnStyCSSList: {}});
+    custDmnStyList={};
+    }
+    else{
+    custDmnStyCSSList=item.custDmnStyCSSList;
+    }
+
+
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
+ document.getElementsByClassName('custApplyListTxt')[0].value=objToTxtAr(custApplyList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
  document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);
+ document.getElementsByClassName('custDmnStyCSSTxt')[0].value=mObjToTxtAr(custDmnStyCSSList);
 });
 
 //running main function

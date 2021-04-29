@@ -60,6 +60,27 @@ function startListen(){
         });
         //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
       break;
+      case 'addToApplyList':
+        chrome.tabs.query({active: true, currentWindow: true},(tabs) => {
+        var url=tabs[0].url;
+        var host=hostFromURL(url);
+          chrome.storage.local.get('custApplyList',(d) => {
+          var newCL=d.custApplyList;
+          newCL[host]=null;
+            var notif=document.getElementsByClassName('notify')[0];
+            otif.id=''; //resets the notification area animation
+            chrome.storage.local.set({custApplyList: newCL},()=>{
+            console.log('butWhyMod: added host to Apply List ' + host);
+            notif.textContent='\'' + host + '\' added to Apply list.';
+            notif.id='fadeOut';
+            notif.addEventListener("animationend", ()=>{
+            notif.id='';
+            });
+            })
+          });
+        });
+        //browser.storage.local.set({mnl: !e.target.checked}).then(()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)}, onError);
+      break;
       case 'mnl':
       /*
         browser.storage.local.get('mnl').then((item) => {
@@ -80,7 +101,7 @@ function startListen(){
         chrome.runtime.openOptionsPage();
       break;
       case 'donate':
-        chrome.tabs.create({url: 'https://patreon.com/WKLaume'});
+        chrome.tabs.create({url: 'https://b3spage.sourceforge.io/?butWhyMod'});
       break;
       default:
       break;

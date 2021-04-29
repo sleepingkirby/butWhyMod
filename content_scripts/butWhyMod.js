@@ -103,6 +103,37 @@
     }
   }
 
+  /*------------------------------------
+  pre: custDmnStyCSSList obj
+  post: page elements that applies styled
+  styles the elements in question
+  ------------------------------------*/
+  function styleEls(objArr, regexStr, css){
+    if(regexStr==='undefined' || regexStr===null || regexStr==""){
+    //if no pattern, nothing to match
+    return null;
+    }
+    if(css==='undefined' || css===null|| css==""){
+    //if no css, there's nothing to style
+    return null;
+    }
+
+    var regexPatt = new RegExp(regexStr, "ig");
+
+
+    for(let obj of objArr){
+      //modal or veil
+        var classN=obj.className.match(regexPatt);
+        var idN=obj.id.match(regexPatt);
+      if(classN || idN){
+        var idClass=classN?"class name":"id name";
+        var objname=idClass=="class name"?obj.className:obj.id;
+      console.log("butWhyMod: found potential element to be styled " + idClass + " \"" + objname + "\". Applying deemed css style...");
+      obj.style.cssText=css;
+      }
+    }
+  }
+
   /*------------------------
   pre: none
   post: none
@@ -119,12 +150,17 @@
     chrome.storage.local.get(null, (item) => {
     var custDmnPatList=item.hasOwnProperty('custDmnPatList')?item.custDmnPatList:"";
     var custDmnStyList=item.hasOwnProperty('custDmnStyList')?item.custDmnStyList:"";
+    var custDmnStyCSSList=item.hasOwnProperty('custDmnStyCSSList')?item.custDmnStyCSSList:"";
       if(custDmnPatList.hasOwnProperty(window.location.host) || custDmnStyList.hasOwnProperty(window.location.host)){
       var conslPat=custDmnPatList.hasOwnProperty(window.location.host)?"modal pattern: \"" + custDmnPatList[window.location.host] + "\" ":'';
       var conslSty =  custDmnStyList.hasOwnProperty(window.location.host)?" style pattern: \"" + custDmnStyList[window.location.host] + "\" ":'';
       conslPat=conslPat + conslSty;
       console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
       disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]); 
+      }
+      if(custDmnStyList.hasOwnProperty(window.location.host)){
+      //run custome styling
+      styleEls(objArr, custDmnStyCSSList[window.location.host].patt, custDmnStyCSSList[window.location.host].css);
       }
     });
 
@@ -186,6 +222,15 @@
     custList=item.custList;
     }
 
+  var applyList={};
+    if(item.hasOwnProperty('custApplyList') === false){
+      chrome.storage.local.set({custApplyList: {}});
+    applyList={};
+    } 
+    else{
+    applyList=item.custApplyList;
+    }
+
   var custDmnPatList={};
     if(!item.hasOwnProperty('custDmnPatList')){
     chrome.storage.local.set({custDmnPatList: {'www.facebook.com':'_5hn6'}});
@@ -204,10 +249,19 @@
     custDmnStyList=item.custDmnStyList;
     }
 
+  var custDmnStyCSSList={};
+    if(!item.hasOwnProperty('custDmnStyCSSList')){
+    chrome.storage.local.set({custDmnStyCSSList: {}});
+    custDmnStyCSSList={};
+    }
+    else{
+    custDmnStyList=item.custDmnStyList;
+    }
+
+
   var dmn=window.location.host;
     
- 
-    if(item['mnl'] === false){
+    if(item['mnl'] === false || applyList.hasOwnProperty(dmn)===true){
 
     //if dmn in custList, do nothing
     if(custList.hasOwnProperty(dmn)){
@@ -215,7 +269,7 @@
     return null;
     } 
 
-    console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
+    applyList.hasOwnProperty(dmn)?console.log('butWhyMod: Domain in apply list. Starting removal of modal.'):console.log('butWhyMod: Automatic pruning set. Starting removal of modal.');
     console.log('butWhyMod: Preliminary modal removal...');
     pageDone();
     console.log('butWhyMod: adding event listener for removal on page complete.');
