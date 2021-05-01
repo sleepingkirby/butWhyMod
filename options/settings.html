@@ -17,7 +17,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td colspan=2>
               <textarea class="custListTxt" placeholder="ex. domain.com&#10;domain2.com&#10;domain3.com"></textarea>
             </td>
           </tr>
@@ -34,7 +34,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td colspan=2>
               <textarea class="custApplyListTxt" placeholder="ex. domain.com&#10;domain2.com&#10;domain3.com"></textarea>
             </td>
           </tr>
@@ -48,14 +48,14 @@
             Custom Modal Domains and patterns (Removes element)
             </th>
           </tr>
-            <th>
+            <th colspan=2>
             [URL Pattern] | [Class Name]
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td colspan=2>
               <textarea class="custDmnPatTxt" placeholder="ex. domain.com|className&#10;domain2.com|className2&#10;domain3.com|className3"></textarea>
             </td>
           </tr>
@@ -69,14 +69,14 @@
             Custom Style Domains and patterns (De/Re-styles element)
             </th>
           </tr>
-            <th>
+            <th colspan=2>
             [URL Pattern] | [Class Name]
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td colspan=2>
               <textarea class="custDmnStyTxt" placeholder="ex. domain.com|className&#10;domain2.com|className2&#10;domain3.com|className3"></textarea>
             </td>
           </tr>
@@ -90,14 +90,14 @@
             Apply custom css for element
             </th>
           </tr>
-            <th>
+            <th colspan=2>
             [URL Pattern] | [Class Name] | [CSS string]
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td colspan=2>
               <textarea class="custDmnStyCSSTxt" placeholder="ex. domain.com|className|border: 1px solid red;&#10;domain2.com|className2|border: 1px solid blue;"></textarea>
             </td>
           </tr>
@@ -105,9 +105,12 @@
       </table> 
 
 
-      <div style="display: flex; justify-content:space-between; padding-bottom: 8px; width: 100%; text-align: right; margin-bottom: 30px; border-bottom: 1px solid #E0E0E0; padding-bottom: 30px;">
-        <input class="savePref" type="submit" name='export' value="Export settings to file">
-        <input class="savePref" type="submit" name='savePref' value="Save Preferences">
+      <div style="display: flex; flex-direction: column; justify-content:flex-start; width: 100%; text-align: right; margin-bottom: 30px; border-bottom: 1px solid #888888; padding-bottom: 14px;">
+        <div class="notify">placeholder</div>
+        <div style="display: flex; flex-direction: row; justify-content:space-between;">
+          <input class="savePref" type="submit" name='export' value="Export settings to file">
+          <input class="savePref" type="submit" name='savePref' value="Save Preferences">
+        </div>
       </div>
   
     <script src="./options.js"></script>
