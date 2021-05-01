@@ -133,11 +133,49 @@ function startListen(){
         notif.id='';
         });
       break;
+      case 'export':
+      chrome.storage.local.get(null, (item)=>{
+      var custList=item.custList;
+
+      var custApplyList=item.custApplyList;
+
+      var custDmnPatList=item.custDmnPatList;
+
+      var custDmnStyList=item.custDmnStyList;
+
+      var custDmnStyCSSList={};
+      custDmnStyCSSList=item.custDmnStyCSSList;
+      document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
+      document.getElementsByClassName('custApplyListTxt')[0].value=objToTxtAr(custApplyList);
+      document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
+      document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);
+      document.getElementsByClassName('custDmnStyCSSTxt')[0].value=mObjToTxtAr(custDmnStyCSSList);
+
+      var rtrn="Ignore List:\n"+objToTxtAr(custList)+"\n\nApply List:\n"+objToTxtAr(custApplyList)+"\n\nCustom Modal Domains and patterns (Removes element):\n"+objToTxtAr(custDmnPatList)+"\n\nCustom Style Domains and patterns (De/Re-styles element):\n"+objToTxtAr(custDmnStyList)+"\n\nApply custom css for element:\n"+mObjToTxtAr(custDmnStyCSSList);
+      exportSettings(rtrn);
+      });
+      break;
       default:
       break;
     }
   });
 
+}
+
+
+function exportSettings( str ){
+//not my code. But very clean and understandable so I;m using it
+//https://stackoverflow.com/questions/33664398/how-to-download-file-using-javascript-only
+var a = document.createElement("a");
+a.style = "display: none";
+document.body.appendChild(a);
+
+var blob = new File([str], {type: 'text/plain'});
+var url = window.URL.createObjectURL(blob);
+a.href = url;
+a.download = "butWhyMod_settings_backup.txt";
+a.click();
+window.URL.revokeObjectURL(url);
 }
 
 

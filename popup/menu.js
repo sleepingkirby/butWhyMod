@@ -68,7 +68,7 @@ function startListen(){
           var newCL=d.custApplyList;
           newCL[host]=null;
             var notif=document.getElementsByClassName('notify')[0];
-            otif.id=''; //resets the notification area animation
+            notif.id=''; //resets the notification area animation
             chrome.storage.local.set({custApplyList: newCL},()=>{
             console.log('butWhyMod: added host to Apply List ' + host);
             notif.textContent='\'' + host + '\' added to Apply list.';
