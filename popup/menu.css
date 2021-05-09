@@ -13,6 +13,18 @@ body > div{
 margin-bottom: 5px;
 }
 
+a{
+text-decoration: none;
+color: #0852ff;
+font-weight: 700;
+}
+
+a:visited{
+text-decoration: none;
+color: #0852ff;
+font-weight: 700;
+}
+
 .button {
   margin: 3% auto;
   padding: 2px;

@@ -85,20 +85,23 @@
 
     for(let obj of objArr){
       //modal or veil
-        var classN=obj.className.match(regexPatt);
-        var idN=obj.id.match(regexPatt);
-      if(classN || idN){
-        var idClass=classN?"class name":"id name";
-        var objname=idClass=="class name"?obj.className:obj.id;
-      console.log("butWhyMod: found potential modal or modal-related object with " + idClass + " \"" + objname + "\". Don't like it. Making it go away...");
-      obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
-      obj.className="dontCare";
-      obj.id="dontCare";
-      }
-      //stuff that needs style only removed like filters
-      else if( obj.className.match(regexPattB)){
-      console.log("butWhyMod: found styled object with classname \"" + obj.className + "\". De/Restyling...");
-      obj.setAttribute('style', 'filter: none !important; position: static !important;'); 
+      if(typeof obj=="object"&&obj&&(obj.getAttribute("class")||obj.getAttribute("id"))){
+        console.log(obj.getAttribute("class"));
+        var classN=obj.hasAttribute("class")?obj.getAttribute("class").match(regexPatt):false;
+        var idN=obj.hasAttribute("id")?obj.getAttribute("id").match(regexPatt):false;
+        if(classN || idN){
+          var idClass=classN?"class name":"id name";
+          var objname=idClass=="class name"?obj.getAttribute("class"):obj.getAttribute("id");
+        console.log("butWhyMod: found potential modal or modal-related object with " + idClass + " \"" + objname + "\". Don't like it. Making it go away...");
+        obj.setAttribute('style', 'display: none !important; z-index: -9999999999999 !important;');
+        obj.className="dontCare";
+        obj.id="dontCare";
+        }
+        //stuff that needs style only removed like filters
+        else if(obj.hasAttribute("class") && obj.getAttribute("class").match(regexPattB)){
+        console.log("butWhyMod: found styled object with classname \"" + obj.getAttribute("class") + "\". De/Restyling...");
+        obj.setAttribute('style', 'filter: none !important; position: static !important;'); 
+        }
       }
     }
   }
