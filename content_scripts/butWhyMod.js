@@ -141,7 +141,8 @@
   -------------------------*/
   function pageDone(){
   console.log("butWhyMod: Document status: " +  document.readyState);
-    var objArr = document.getElementsByTagName("div");
+    //var objArr = document.getElementsByTagName("div");
+    var objArr = document.all;
     console.log("butWhyMod: starting butWhyMod. " + objArr.length + " objects to go through");
 
     setBody();
@@ -158,7 +159,7 @@
       console.log("butWhyMod: Applying custom domain pattern to custom domain. Domain: " + window.location.host + ", " + conslPat);
       disableModal(objArr, custDmnPatList[window.location.host], custDmnStyList[window.location.host]); 
       }
-      if(custDmnStyList.hasOwnProperty(window.location.host)){
+      if(custDmnStyCSSList.hasOwnProperty(window.location.host)){
       //run custome styling
       styleEls(objArr, custDmnStyCSSList[window.location.host].patt, custDmnStyCSSList[window.location.host].css);
       }
