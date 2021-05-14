@@ -37,10 +37,12 @@
   var prevStyle=document.documentElement.getAttribute('style')?document.documentElement.getAttribute('style'):'';
   document.documentElement.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
 
-  prevStyle=document.body.getAttribute('style')?document.body.getAttribute('style'):'';
-  document.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
-    if(document.body.className.match(/modal/ig)){
-    //document.body.className="";
+    if(document.body){
+    prevStyle=document.body.getAttribute('style')?document.body.getAttribute('style'):'';
+    document.body.setAttribute('style', prevStyle + 'overflow: auto !important; position: static !important;');
+      if(document.body.className.match(/modal/ig)){
+      //document.body.className="";
+      }
     }
   }
 
@@ -86,7 +88,6 @@
     for(let obj of objArr){
       //modal or veil
       if(typeof obj=="object"&&obj&&(obj.getAttribute("class")||obj.getAttribute("id"))){
-        console.log(obj.getAttribute("class"));
         var classN=obj.hasAttribute("class")?obj.getAttribute("class").match(regexPatt):false;
         var idN=obj.hasAttribute("id")?obj.getAttribute("id").match(regexPatt):false;
         if(classN || idN){
@@ -170,6 +171,46 @@
 
     //standard modal disable
     disableModal(objArr);	
+  }
+
+
+  /*------------------------------------------
+  pre:none
+  post HTMLVideoElement.prototype.play is 
+  backed up and overwritten with fake function
+  description: injects code into page to override
+  and disable play() on videos;
+  -------------------------------------------*/
+  function stopVideoPlay(){
+  console.log("bWM: Preventing all event listeners from");
+  var injectedCode = '(' + function() {
+    HTMLVideoElement.prototype.bwmBkupPlay=HTMLVideoElement.prototype.play;
+    HTMLVideoElement.prototype.play=function(){
+    console.log("BWM: An attempt to play a video");
+    }
+  } + ')();';
+
+  var s = document.createElement('script');
+  s.textContent = injectedCode;
+  (document.head || document.documentElement).appendChild(s);
+  s.parentNode.removeChild(s);
+  }
+
+
+  /*-------------------------------------------------------------------
+  pre: stopVideoPlay();
+  post: reverses the what stopVideoPlay() did
+  reverses the what stopVideoPlay() did
+  -------------------------------------------------------------------*/
+  function resumeVideoPlay(){
+  var injectedCode = '(' + function() {
+    HTMLVideoElement.prototype.play=HTMLVideoElement.prototype.bwmBkupPlay;
+  } + ')();';
+
+  var s = document.createElement('script');
+  s.textContent = injectedCode;
+  (document.head || document.documentElement).appendChild(s);
+  s.parentNode.removeChild(s);
   }
 
 
@@ -259,8 +300,93 @@
     custDmnStyCSSList={};
     }
     else{
-    custDmnStyList=item.custDmnStyList;
+    custDmnStyCssList=item.custDmnStyCssList;
     }
+
+  var videoMngTgl=false; //setting to determine whether or not to monitor all videos that play. on the page.
+    if(!item.hasOwnProperty('videoMngTgl')){
+    chrome.storage.local.set({videoMngTgl: false});
+    }
+    else{
+    videoMngTgl=item.videoMngTgl;
+    }
+
+  var videoStopTgl=false; //setting to determine whether or not to stop all play back.
+    if(!item.hasOwnProperty('videoStopTgl')){
+    chrome.storage.local.set({videoStopTgl: false});
+    }
+    else{
+    videoStopTgl=item.videoStopTgl;
+    }
+
+  var videoStopList={}; //which domains to stop play backon.
+    if(!item.hasOwnProperty('videoStopList')){
+    chrome.storage.local.set({videoStopList: {}});
+    videoStopList={};
+    }
+    else{
+    videoStopList=item.videoStopList;
+    }
+
+
+
+
+  /*
+  what should video management do?
+  when video management is turned on, when you mouse over a video, it should give you the option to skip to the end
+  when you turn on stop auto play, it should prevent all videos from auto playing and then restore the functionality when you mouse over any video
+  */
+
+
+//window.addEventListener('contextmenu',function(e){e.stopPropagation();}, true);
+//window.addEventListener=function(){}; //assigns a null function to event listener, stopping it to assign any new eventListener 
+  //stopVideoPlay();
+
+  //document.addEventListener('readystatechange', event => {
+  window.addEventListener('load', (event) => {
+    //console.log("============================================>>"+event.target.readyState);
+    console.log("butWhyMod ================================>>");
+    var frames=document.getElementsByTagName("iframe");
+    var m=frames.length;
+    var frame=null; 
+    console.log("frames found "+m+" =====================>>");
+
+    //why not use manifest.json's run_at:document_end and all_frames: true?
+    //because that only applies if the iframes exists on document_end. A lot of sites (huffpo, for example) adds iframes
+    // after teh fact. Why are people using iframes? They were bad during the 90's, they're still bad now.
+    console.log("frames found "+m+" =====================>>");
+      for(let i=0;i<m;i++){
+      frame=frames[i].contentDocument;
+      console.log("processing frame "+i+" <===================");
+        try{
+          if(frame&&frame.body){
+          frame=frame.body;
+          console.log(i+") frame is good <<=======================");
+          console.log(frame);
+          frame.addEventListener("play",(e)=>{console.log(i+" <<============================");},true);
+          let fobj=frame.getElementsByTagName("video");
+          let fm=fobj.length;
+          console.log("videos found: "+fm);
+          //stop all videos
+            for(let fi=0;fi<max;fi++){
+            fobj[fi].pause();
+            }
+          }
+          else{
+          console.log(i+" add failed");
+          }
+        }
+        catch(e){
+        console.log("failed: "+e);
+        }
+      }
+  });
+ 
+
+  document.addEventListener("play",(e)=>{
+  console.log("=============================>>");
+  console.log(e.target);
+  },true);
 
 
   var dmn=window.location.host;
