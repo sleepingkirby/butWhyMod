@@ -1,5 +1,3 @@
-
-
 //loading external files and settings.
 (function() {
   /**
@@ -15,7 +13,9 @@
   window.hasRun = true;
   window.hasModaled = false;
 
-  
+  var curVidEl=null;
+  var curEl=null;
+  var dmn=null;  
 
   
   /*--------------------------
@@ -186,7 +186,7 @@
   var injectedCode = '(' + function() {
     HTMLVideoElement.prototype.bwmBkupPlay=HTMLVideoElement.prototype.play;
     HTMLVideoElement.prototype.play=function(){
-    console.log("BWM: An attempt to play a video");
+    console.log("ButWhyMod: An attempt to play a video");
     }
   } + ')();';
 
@@ -203,14 +203,192 @@
   reverses the what stopVideoPlay() did
   -------------------------------------------------------------------*/
   function resumeVideoPlay(){
+
   var injectedCode = '(' + function() {
+    if(HTMLVideoElement.prototype.hasOwnProperty("bwmBkupPlay")){
     HTMLVideoElement.prototype.play=HTMLVideoElement.prototype.bwmBkupPlay;
+    delete HTMLVideoElement.prototype.bwmBkupPlay;
+    }
   } + ')();';
 
   var s = document.createElement('script');
   s.textContent = injectedCode;
   (document.head || document.documentElement).appendChild(s);
   s.parentNode.removeChild(s);
+ 
+    if(curVidEl){
+      curVidEl.pause();
+    }
+ 
+  console.log("ButWhyMod: Resume Play Ability.");
+  }
+
+  /*-----------------------------------------------------------------------
+  pre: none
+  post: none
+  determines if trgt is a video and return if it is. If it's not, check to see if it's an iframe
+  if it's an iframe try to find the first visible video and return that.
+  All other cases return null;
+  -----------------------------------------------------------------------*/
+  function seekVidEl(trgt){
+    if(!trgt||typeof trgt!="object"){
+    return null;
+    }
+
+    if(trgt.tagName.toLocaleLowerCase()=="video"){
+    return trgt;
+    }
+
+    //check previous and next sibling
+    if(trgt.previousElementSibling && trgt.previousElementSibling.tagName.toLocaleLowerCase()=="video"){
+    return trgt.previousElementSibling;
+    }
+
+    if(trgt.nextElementSibling&&trgt.nextElementSibling.tagName.toLocaleLowerCase()=="video"){
+    return trgt.nextElementSibling;
+    }
+
+
+    if(trgt.tagName.toLocaleLowerCase()!="iframe"){
+    return null;
+    }
+   
+  var el=null;
+    
+    if(!trgt.contentDocument||!trgt.contentDocument.body){
+    return null;
+    }
+
+    el=trgt.contentDocument.body;
+    
+  var obj=el.getElementsByTagName("video");
+  var m=obj.length;
+    for(let i=0;i<m;i++){
+      if(obj[i].style.display&&obj[i].style.display!="none"){
+      return obj[i];
+      }
+    }
+
+  return null;
+  }
+
+
+  /*-----------------------------------------------
+  pre: none
+  post: none
+  function to skip video to the end
+  -----------------------------------------------*/
+  function skipVidToEnd(){
+    if(curVidEl){
+    curVidEl.currentTime=curVidEl.duration;
+    }
+  } 
+
+  /*-----------------------------------------------
+  pre: global var curVidEl, curEl and dmn
+  post:
+  evalutes as to what actions to do for the video stuff
+  -----------------------------------------------*/
+  function videoStopEval(mngTgl, stopTgl, stopList, stopBList){
+  
+  /*
+  if mngTgl, allows for mouse over on any video to give an option to skip the video
+  */
+    if(mngTgl){
+      /*
+      create element 
+      element.onclick=function to seek out video element and set currentTime=duration
+      */
+    var el=document.createElement("div");
+    el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 0px 8px 0px;padding:3px 10px 3px 10px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
+    el.id="butWhyModSkipEndEl";
+    el.innerText="SKIP";
+
+      document.addEventListener("click", (e)=>{
+        switch(e.target.id){
+          case el.id:
+          skipVidToEnd();
+          break;
+          default:
+          break;
+        }
+      });
+
+    var on=null;
+
+      document.addEventListener("mouseover", (e)=>{
+        on=seekVidEl(e.target);
+        //if target is a video or the el element, add and/or reposition the el element
+        if(on||e.target.id==el.id){
+
+        //setting global var curVidEl to current video element so other functions can find/control it
+        curVidEl=on?on:curVidEl;
+
+        //setting global var curEl to current element so other function can find/control it
+        curEl=e.target;
+
+        //restoring play functionality if it's been disabled by stopVideoPlay()
+        //resumeVideoPlay();
+
+          if(!document.getElementById(el.id)){
+          //console.log("adding element");
+          document.body.appendChild(el);
+          }
+        var pos=curEl.getBoundingClientRect();
+        var subPos={x:0,y:0};
+        /*
+          //the video could be in an iframe. If so, look for the video
+          if(curEl.tagName.toLocaleLowerCase()=="iframe"){
+          subPos=on.getBoundingClientRect();
+          }
+        el.style.left=window.scrollX+pos.x+subPos.x+"px";
+        el.style.top=window.scrollY+pos.y+subPos.y+"px";
+        */
+        el.style.left=window.scrollX+pos.x+"px";
+        el.style.top=window.scrollY+pos.y+"px";
+        console.log(pos.x+", "+pos.y);
+        console.log(el.style.left+", "+el.style.top);
+        }
+        else{
+          if(e.target&&e.target.id!=el.id&&document.getElementById(el.id)){
+            try{
+            document.body.removeChild(el);
+            }
+            catch(e){
+            console.log("butWhyMod: Unable to remove skip button. This is okay: "+e);
+            }
+          }
+        }
+      });
+
+      //adjust el when window resizes
+      window.addEventListener("resize",(e)=>{
+        if(document.getElementById(el.id)){
+        var pos=curEl.getBoundingClientRect();
+        var subPos={x:0,y:0};
+          //the video could be in an iframe. If so, look for the video
+          if(curEl.tagName.toLocaleLowerCase()=="iframe"){
+          subPos=on.getBoundingClientRect();
+          }
+        el.style.left=window.scrollX+pos.x+subPos.x+"px";
+        el.style.top=window.scrollY+pos.y+subPos.y+"px";
+        }
+      });
+
+    }
+
+  //handling how to the how to stop auto play
+  //stopTgl, stopList, stopBList
+    if((stopTgl&&!stopBList.hasOwnProperty(dmn))||(!stopTgl&&stopList.hasOwnProperty(dmn))){
+      stopVideoPlay();
+      //sets the event listener to restore video playing
+      document.addEventListener("mouseover", (e)=>{
+        if(seekVidEl(e.target)||e.target.id==el.id){
+        //restoring play functionality if it's been disabled by stopVideoPlay()
+        resumeVideoPlay();
+        }
+      });
+    }
   }
 
 
@@ -241,12 +419,10 @@
       default:
       break;
     }
-
-
   }
 
-
-  //runs at the start of every page
+  
+//=====================================runs at the start of every page=======================
   chrome.storage.local.get(null, (item) => {
 
     //set default
@@ -319,7 +495,7 @@
     videoStopTgl=item.videoStopTgl;
     }
 
-  var videoStopList={}; //which domains to stop play backon.
+  var videoStopList={}; //which domains to stop play back on.
     if(!item.hasOwnProperty('videoStopList')){
     chrome.storage.local.set({videoStopList: {}});
     videoStopList={};
@@ -328,68 +504,21 @@
     videoStopList=item.videoStopList;
     }
 
+  var videoStopBList={}; //which domains to ignore stop auto play back on.
+    if(!item.hasOwnProperty('videoStopBList')){
+    chrome.storage.local.set({videoStopBList: {}});
+    videoStopBList={};
+    }
+    else{
+    videoStopBList=item.videoStopBList;
+    }
 
 
 
-  /*
-  what should video management do?
-  when video management is turned on, when you mouse over a video, it should give you the option to skip to the end
-  when you turn on stop auto play, it should prevent all videos from auto playing and then restore the functionality when you mouse over any video
-  */
+  videoStopEval(videoMngTgl, videoStopTgl, videoStopList, videoStopBList);//checks to see how to evalutate video stoppage
 
 
-//window.addEventListener('contextmenu',function(e){e.stopPropagation();}, true);
-//window.addEventListener=function(){}; //assigns a null function to event listener, stopping it to assign any new eventListener 
-  //stopVideoPlay();
-
-  //document.addEventListener('readystatechange', event => {
-  window.addEventListener('load', (event) => {
-    //console.log("============================================>>"+event.target.readyState);
-    console.log("butWhyMod ================================>>");
-    var frames=document.getElementsByTagName("iframe");
-    var m=frames.length;
-    var frame=null; 
-    console.log("frames found "+m+" =====================>>");
-
-    //why not use manifest.json's run_at:document_end and all_frames: true?
-    //because that only applies if the iframes exists on document_end. A lot of sites (huffpo, for example) adds iframes
-    // after teh fact. Why are people using iframes? They were bad during the 90's, they're still bad now.
-    console.log("frames found "+m+" =====================>>");
-      for(let i=0;i<m;i++){
-      frame=frames[i].contentDocument;
-      console.log("processing frame "+i+" <===================");
-        try{
-          if(frame&&frame.body){
-          frame=frame.body;
-          console.log(i+") frame is good <<=======================");
-          console.log(frame);
-          frame.addEventListener("play",(e)=>{console.log(i+" <<============================");},true);
-          let fobj=frame.getElementsByTagName("video");
-          let fm=fobj.length;
-          console.log("videos found: "+fm);
-          //stop all videos
-            for(let fi=0;fi<max;fi++){
-            fobj[fi].pause();
-            }
-          }
-          else{
-          console.log(i+" add failed");
-          }
-        }
-        catch(e){
-        console.log("failed: "+e);
-        }
-      }
-  });
- 
-
-  document.addEventListener("play",(e)=>{
-  console.log("=============================>>");
-  console.log(e.target);
-  },true);
-
-
-  var dmn=window.location.host;
+  dmn=window.location.host;
     
     if(item['mnl'] === false || applyList.hasOwnProperty(dmn)===true){
 

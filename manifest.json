@@ -3,7 +3,7 @@
   "manifest_version": 2,
   "name": "ButWhyMod",
   "version": "2.2",
-  "description": "Modals are those in-page popups. Attempts to remove modals for the webpage. *Please be aware that some websites requires modals.*",
+  "description": "Modals are those in-page popups. Attempts to remove modals for the webpage. Can also stop auto play videos or skip unskippable video. *Please be aware that some websites requires modals.*",
   "permissions": [
     "storage",
     "declarativeContent",

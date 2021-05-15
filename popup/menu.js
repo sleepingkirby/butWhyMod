@@ -97,6 +97,12 @@ function startListen(){
       */
          chrome.storage.local.set({mnl: !e.target.checked},()=>{console.log('butWhyMod: \'manual\' set to ' + !e.target.checked)});
       break;
+      case 'videoMngTgl':
+         chrome.storage.local.set({videoMngTgl: e.target.checked},()=>{console.log('butWhyMod: \'videoMngTgl\' set to ' + e.target.checked)});
+      break;
+      case 'videoStopTgl':
+         chrome.storage.local.set({videoStopTgl: e.target.checked},()=>{console.log('butWhyMod: \'videoStopTgl\' set to ' + e.target.checked)});
+      break;
       case 'settings':
         chrome.runtime.openOptionsPage();
       break;
@@ -113,7 +119,7 @@ function startListen(){
 
 
   //set the checkbox from the config
-  chrome.storage.local.get('mnl',(item) => {
+  chrome.storage.local.get(null,(item) => {
     //set default
     if(!item.hasOwnProperty('mnl')){
     console.log('butWhyMod: manual setting doesn\'t exist. Setting default value.');
@@ -121,7 +127,25 @@ function startListen(){
     chrome.storage.local.set({mnl: false});                         
     }
     //checked = mnl is false(auto), unchecked = mnl is true(manual)
-   document.getElementsByName('mnl')[0].checked = !item['mnl'];
+  document.getElementsByName('mnl')[0].checked = !item['mnl'];
+
+    if(!item.hasOwnProperty('videoMngTgl')){
+    console.log('butWhyMod: videoMngTgl setting doesn\'t exist. Setting default value.');
+    item={videoMngTgl: false};
+    chrome.storage.local.set({videoMngTgl: false});
+    }
+  document.getElementsByName('videoMngTgl')[0].checked = item['videoMngTgl'];
+
+
+    if(!item.hasOwnProperty('videoStopTgl')){
+    console.log('butWhyMod: videoStopTgl setting doesn\'t exist. Setting default value.');
+    item={videoStopTgl: false};
+    chrome.storage.local.set({videoStopTgl: false});
+    }
+  document.getElementsByName('videoStopTgl')[0].checked = item['videoStopTgl'];
+
+
+
   });
 
 
