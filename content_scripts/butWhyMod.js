@@ -344,6 +344,7 @@
         el.style.left=window.scrollX+pos.x+subPos.x+"px";
         el.style.top=window.scrollY+pos.y+subPos.y+"px";
         */
+        //MOVE THIS TO THE MIDDLE OF THE VIDEO FRAME BECAUSE OF TITLE OVERLAYS
         el.style.left=window.scrollX+pos.x+"px";
         el.style.top=window.scrollY+pos.y+"px";
         console.log(pos.x+", "+pos.y);
