@@ -182,11 +182,13 @@
   and disable play() on videos;
   -------------------------------------------*/
   function stopVideoPlay(){
-  console.log("bWM: Preventing all event listeners from");
   var injectedCode = '(' + function() {
     HTMLVideoElement.prototype.bwmBkupPlay=HTMLVideoElement.prototype.play;
-    HTMLVideoElement.prototype.play=function(){
-    console.log("ButWhyMod: An attempt to play a video");
+    HTMLVideoElement.prototype.play=function(e){
+    console.log("ButWhyMod: An attempt was made to play a video");
+      if(document.querySelector("button.ytp-play-button.ytp-button")){
+      document.querySelector("button.ytp-play-button.ytp-button").click();
+      }
     }
   } + ')();';
 
@@ -208,6 +210,7 @@
     if(HTMLVideoElement.prototype.hasOwnProperty("bwmBkupPlay")){
     HTMLVideoElement.prototype.play=HTMLVideoElement.prototype.bwmBkupPlay;
     delete HTMLVideoElement.prototype.bwmBkupPlay;
+    console.log("ButWhyMod: Resume Play Ability.");
     }
   } + ')();';
 
@@ -215,12 +218,6 @@
   s.textContent = injectedCode;
   (document.head || document.documentElement).appendChild(s);
   s.parentNode.removeChild(s);
- 
-    if(curVidEl){
-      curVidEl.pause();
-    }
- 
-  console.log("ButWhyMod: Resume Play Ability.");
   }
 
   /*-----------------------------------------------------------------------
@@ -281,8 +278,11 @@
   function skipVidToEnd(){
     if(curVidEl){
     curVidEl.currentTime=curVidEl.duration;
+    curVidEl.dispatchEvent(new Event("ended"));
     }
   } 
+
+  
 
   /*-----------------------------------------------
   pre: global var curVidEl, curEl and dmn
@@ -290,7 +290,6 @@
   evalutes as to what actions to do for the video stuff
   -----------------------------------------------*/
   function videoStopEval(mngTgl, stopTgl, stopList, stopBList){
-  
   /*
   if mngTgl, allows for mouse over on any video to give an option to skip the video
   */
@@ -300,17 +299,20 @@
       element.onclick=function to seek out video element and set currentTime=duration
       */
     var el=document.createElement("div");
-    el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 0px 8px 0px;padding:3px 10px 3px 10px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
+    el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
     el.id="butWhyModSkipEndEl";
     el.innerText="SKIP";
+    el.bwmAct="skipVid";
 
       document.addEventListener("click", (e)=>{
-        switch(e.target.id){
-          case el.id:
-          skipVidToEnd();
-          break;
-          default:
-          break;
+        if(e.target.hasOwnProperty("bwmAct")){
+          switch(e.target.bwmAct){
+            case el.bwmAct:
+            skipVidToEnd();
+            break;
+            default:
+            break;
+          }
         }
       });
 
@@ -334,21 +336,25 @@
           //console.log("adding element");
           document.body.appendChild(el);
           }
-        var pos=curEl.getBoundingClientRect();
-        var subPos={x:0,y:0};
-        /*
-          //the video could be in an iframe. If so, look for the video
-          if(curEl.tagName.toLocaleLowerCase()=="iframe"){
-          subPos=on.getBoundingClientRect();
+        
+          if(on){
+          var pos=curEl.getBoundingClientRect();
+          /*
+          removing this for now until I see a real world example for it
+          because there's no good way to communicate that the video element returned from seekVidEl is from within an iframe 
+          var subPos={x:0,y:0};
+            //the video could be in an iframe. If so, look for the video
+            if(curEl.tagName.toLocaleLowerCase()=="iframe"){
+            subPos=on.getBoundingClientRect();
+            }
+          el.style.left=window.scrollX+pos.x+subPos.x+"px";
+          el.style.top=window.scrollY+pos.y+subPos.y+"px";
+          */
+          el.style.left=window.scrollX+pos.x+"px";
+          el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
+          //console.log(pos.x+", "+pos.y);
+          //console.log(el.style.left+", "+el.style.top);
           }
-        el.style.left=window.scrollX+pos.x+subPos.x+"px";
-        el.style.top=window.scrollY+pos.y+subPos.y+"px";
-        */
-        //MOVE THIS TO THE MIDDLE OF THE VIDEO FRAME BECAUSE OF TITLE OVERLAYS
-        el.style.left=window.scrollX+pos.x+"px";
-        el.style.top=window.scrollY+pos.y+"px";
-        console.log(pos.x+", "+pos.y);
-        console.log(el.style.left+", "+el.style.top);
         }
         else{
           if(e.target&&e.target.id!=el.id&&document.getElementById(el.id)){
@@ -367,19 +373,36 @@
         if(document.getElementById(el.id)){
         var pos=curEl.getBoundingClientRect();
         var subPos={x:0,y:0};
+
+        /*removing iframe video position until I a real world example of it
           //the video could be in an iframe. If so, look for the video
           if(curEl.tagName.toLocaleLowerCase()=="iframe"){
           subPos=on.getBoundingClientRect();
           }
         el.style.left=window.scrollX+pos.x+subPos.x+"px";
         el.style.top=window.scrollY+pos.y+subPos.y+"px";
+        */
+
+        el.style.left=window.scrollX+pos.x+subPos.x+"px";
+        el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
         }
       });
 
     }
 
+  dmn=window.location.host;
   //handling how to the how to stop auto play
   //stopTgl, stopList, stopBList
+  /*
+    console.log("===========================>> stop auto play");
+    console.log(stopTgl);
+    console.log(dmn);
+    console.log("stopBList:"+stopBList.hasOwnProperty(dmn));
+    console.log(stopBList);
+    console.log("stopList:"+stopList.hasOwnProperty(dmn));
+    console.log(stopList);    
+  */
+
     if((stopTgl&&!stopBList.hasOwnProperty(dmn))||(!stopTgl&&stopList.hasOwnProperty(dmn))){
       stopVideoPlay();
       //sets the event listener to restore video playing

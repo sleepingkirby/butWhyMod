@@ -105,7 +105,14 @@ function startListen(){
       var custDmnStyObj=txtArToObj(custDmnSty);
       var custDmnStyCSS=document.getElementsByClassName('custDmnStyCSSTxt')[0].value;
       var custDmnStyCSSObj=txtArToMObj(custDmnStyCSS);
+      var videoStopList=document.getElementsByClassName('videoStopList')[0].value;
+      var videoStopListObj=txtArToObj(videoStopList);
+      var videoStopBList=document.getElementsByClassName('videoStopBList')[0].value;
+      var videoStopBListObj=txtArToObj(videoStopBList);
 
+
+      console.log("==============>>");
+      console.log(videoStopBListObj);
 
       var notif=document.getElementsByClassName('notify')[0];
       notif.id='';
@@ -126,7 +133,11 @@ function startListen(){
         //setting list to apply custom css
         chrome.storage.local.set({custDmnStyCSSList: custDmnStyCSSObj}, saveNotify(notif, 'Custom domains and applied css for patterns saved', true ));
 
+        //setting stop auto play video domain apply list
+        chrome.storage.local.set({videoStopList: videoStopListObj}, saveNotify(notif, 'Stop autoplay video domain apply list saved', true ));
 
+        //setting stop auto play video domain ban list
+        chrome.storage.local.set({videoStopBList: videoStopBListObj}, saveNotify(notif, 'Stop autoplay video domain ignore list saved', true ));
 
       notif.id='fadeOut';
         notif.addEventListener("animationend", ()=>{
@@ -143,6 +154,10 @@ function startListen(){
 
       var custDmnStyList=item.custDmnStyList;
 
+      var videoStopList=item.videoStopList;
+      
+      var videoStopBList=item.videoStopBList;
+
       var custDmnStyCSSList={};
       custDmnStyCSSList=item.custDmnStyCSSList;
       document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
@@ -150,8 +165,10 @@ function startListen(){
       document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
       document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);
       document.getElementsByClassName('custDmnStyCSSTxt')[0].value=mObjToTxtAr(custDmnStyCSSList);
+      document.getElementsByClassName('videoStopList')[0].value=objToTxtAr(videoStopList);
+      document.getElementsByClassName('videoStopBList')[0].value=objToTxtAr(videoStopBList);
 
-      var rtrn="Ignore List:\n"+objToTxtAr(custList)+"\n\nApply List:\n"+objToTxtAr(custApplyList)+"\n\nCustom Modal Domains and patterns (Removes element):\n"+objToTxtAr(custDmnPatList)+"\n\nCustom Style Domains and patterns (De/Re-styles element):\n"+objToTxtAr(custDmnStyList)+"\n\nApply custom css for element:\n"+mObjToTxtAr(custDmnStyCSSList);
+      var rtrn="Ignore List:\n"+objToTxtAr(custList)+"\n\nApply List:\n"+objToTxtAr(custApplyList)+"\n\nCustom Modal Domains and patterns (Removes element):\n"+objToTxtAr(custDmnPatList)+"\n\nCustom Style Domains and patterns (De/Re-styles element):\n"+objToTxtAr(custDmnStyList)+"\n\nApply custom css for element:\n"+mObjToTxtAr(custDmnStyCSSList)+"\n\nDomains that are ignored when \"stop auto\" is turned on. (For pages that auto play videos):\n"+objToTxtAr(videoStopBList)+"\n\nDomains that stop autoplay videos even when \"stop auto\" is turned off. (For pages that auto play videos):\n"+objToTxtAr(videoStopList);
       exportSettings(rtrn);
       });
       break;
@@ -237,12 +254,35 @@ chrome.storage.local.get(null,(item) => {
     custDmnStyCSSList=item.custDmnStyCSSList;
     }
 
+  var videoStopList={};
+    if(item.hasOwnProperty('videoStopList') === false){
+      chrome.storage.local.set({videoStopList: {}});
+    videoStopList={};
+    }
+    else{
+    videoStopList=item.videoStopList;
+    }
+
+  var videoStopBList={};
+    if(item.hasOwnProperty('videoStopBList') === false){
+      chrome.storage.local.set({videoStopBList: {}});
+    videoStopBList={};
+    }
+    else{
+    videoStopBList=item.videoStopBList;
+    }
+
+
+
 
  document.getElementsByClassName('custListTxt')[0].value=objToTxtAr(custList);
  document.getElementsByClassName('custApplyListTxt')[0].value=objToTxtAr(custApplyList);
  document.getElementsByClassName('custDmnPatTxt')[0].value=objToTxtAr(custDmnPatList);
  document.getElementsByClassName('custDmnStyTxt')[0].value=objToTxtAr(custDmnStyList);
  document.getElementsByClassName('custDmnStyCSSTxt')[0].value=mObjToTxtAr(custDmnStyCSSList);
+
+ document.getElementsByClassName('videoStopList')[0].value=objToTxtAr(videoStopList);
+ document.getElementsByClassName('videoStopBList')[0].value=objToTxtAr(videoStopBList);
 });
 
 //running main function
