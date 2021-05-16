@@ -305,11 +305,24 @@
   element.onclick=function to seek out video element and set currentTime=duration
   */
 
+
+  var sty=document.createElement("style");
+  sty.type="text/css";
+  sty.className="extIdNmBWMModSkipEl";
+  sty.textContent="@keyframes extIdNmBWMModSkipElAni{0%{opacity:1;}100%{opacity:0;}}";
+  sty.id=sty.className;
+
   var el=document.createElement("div");
-  el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
+  el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;animation: extIdNmBWMModSkipElAni 1.5s ease-in-out 3.5s forwards;";
   el.id="butWhyModSkipEndEl";
   el.innerText="SKIP";
   el.bwmAct="skipVid";
+
+  el.onanimationend=(e)=>{
+    document.body.removeChild(el);
+    document.head.removeChild(sty);
+    };
+
 
 
     if(mngTgl){
@@ -343,6 +356,7 @@
 
           if(!document.getElementById(el.id)){
           //console.log("adding element");
+          document.head.appendChild(sty);
           document.body.appendChild(el);
           }
         
@@ -369,6 +383,7 @@
           if(e.target&&e.target.id!=el.id&&document.getElementById(el.id)){
             try{
             document.body.removeChild(el);
+            document.head.removeChild(sty);
             }
             catch(e){
             console.log("butWhyMod: Unable to remove skip button. This is okay: "+e);
