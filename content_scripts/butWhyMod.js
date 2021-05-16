@@ -277,7 +277,13 @@
   -----------------------------------------------*/
   function skipVidToEnd(){
     if(curVidEl){
-    curVidEl.currentTime=curVidEl.duration;
+    console.log("ButWhyMod: Video duraction: "+curVidEl.duration);
+      if(curVidEl.duration<=Number.MAX_SAFE_INTEGER&&curVidEl.duration>=0){
+      curVidEl.currentTime=curVidEl.duration;
+      }
+      else{
+      curVidEl.currentTime=Number.MAX_SAFE_INTEGER;
+      }
     curVidEl.dispatchEvent(new Event("ended"));
     }
   } 
