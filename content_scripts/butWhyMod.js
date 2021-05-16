@@ -392,7 +392,7 @@
         el.style.top=window.scrollY+pos.y+subPos.y+"px";
         */
 
-        el.style.left=window.scrollX+pos.x+subPos.x+"px";
+        el.style.left=window.scrollX+pos.x+"px";
         el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
         }
       });
