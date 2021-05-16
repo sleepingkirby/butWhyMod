@@ -299,17 +299,20 @@
   /*
   if mngTgl, allows for mouse over on any video to give an option to skip the video
   */
-    if(mngTgl){
-      /*
-      create element 
-      element.onclick=function to seek out video element and set currentTime=duration
-      */
-    var el=document.createElement("div");
-    el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
-    el.id="butWhyModSkipEndEl";
-    el.innerText="SKIP";
-    el.bwmAct="skipVid";
 
+  /*
+  create element 
+  element.onclick=function to seek out video element and set currentTime=duration
+  */
+
+  var el=document.createElement("div");
+  el.style.cssText="position:absolute;color:#B4B4B4;background-color:rgba(0,0,0,0.6);border-radius:0px 4px 4px 0px;padding:6px 14px 6px 14px;font-weight:800;font-size:larger;z-index:999999;cursor:pointer;";
+  el.id="butWhyModSkipEndEl";
+  el.innerText="SKIP";
+  el.bwmAct="skipVid";
+
+
+    if(mngTgl){
       document.addEventListener("click", (e)=>{
         if(e.target.hasOwnProperty("bwmAct")){
           switch(e.target.bwmAct){
