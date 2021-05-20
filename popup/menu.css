@@ -117,7 +117,7 @@ content: "auto prune";
 }
 
 #tgl+.btn::before{
-content: "manual prune";
+content: "auto prune";
 }
 
 .vids{
