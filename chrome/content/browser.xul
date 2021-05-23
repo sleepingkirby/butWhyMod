@@ -16,7 +16,7 @@
     <menupopup>
         <menuitem label="Disable Modals" oncommand="butWhyModObj.pageDone();"/>
         <menuitem label="White List" oncommand="butWhyModObj.whiteList();"/>
-        <menuitem id="butWhyModMnlBt" label="Manual Prune" oncommand="this.label=butWhyModObj.flipMnlBt();"/>
+        <checkbox id="butWhyModMnlBt" label="Auto Prune" oncommand="butWhyModObj.flipMnlBt(this.checked);"/>
         <menuitem label="Settings" oncommand="butWhyModObj.openCenterWin('chrome://butwhymod/content/options.xul', 'butWhyMod Options')" />
         <menuitem label="Donate" oncommand="window.open('https://patreon.com/WKLaume', '');" />
     </menupopup>

@@ -24,8 +24,10 @@ var butWhyModObj = {
       return null;
       }
 
-      var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
-      document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
+      //var mnlBool=butWhyModObj.getMnlTxt();//not sure why this.getMnlTxt() is not found here. but using butWhyModObj.getMnlTxt() exists for it for some reason
+      //document.getElementById('butWhyModMnlBt').label=mnlBool;//setting toolbar button manual/auto prune label 
+
+      document.getElementById('butWhyModMnlBt').checked=!butWhyModObj.prefMng.getBoolPref('extensions.butWhyMod.mnl');//setting toolbar button manual/auto prune label 
 
         //get and save the window being used
         butWhyModObj.curWin = gBrowser.getBrowserForTab(gBrowser.selectedTab);
@@ -147,7 +149,21 @@ var butWhyModObj = {
   var mnlLbl={false: 'Auto prune', true: 'Manual prune'};
   return mnlLbl[mnlBool];
   },
-  flipMnlBt:function(){
+  getMnlVal:function(btBool, id){
+  //sets the manual/auto prune button display in the toolbar button menu.
+    if( typeof id === undefined || id === null){
+    id='butWhyModMnlBt';
+    }
+    var mnlBool=true;
+    if(typeof btBool === undefined || btBool === null || btBool === undefined){
+    mnlBool=this.prefMng.getBoolPref('extensions.butWhyMod.mnl');
+    }
+    else{
+    mnlBool=btBool;
+    }
+  return mnlBool;
+  },
+  flipMnlBt:function(val){
   // flip the mnl boolean and sets the auto prune/manual prune button
   var mnlBool=this.prefMng.getBoolPref('extensions.butWhyMod.mnl');
   //grabs the current setting. Corrects the setting if incorrect. Flips the value.
@@ -158,10 +174,9 @@ var butWhyModObj = {
     mnlBool=true;
     }
 
-  mnlBool=!mnlBool;
+  mnlBool=!val;
   this.prefMng.setBoolPref('extensions.butWhyMod.mnl', mnlBool);
-  var lblStr=this.getMnlTxt(mnlBool);
-  return lblStr;
+  return mnlBool;
   },
   sleep:function(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
