@@ -288,7 +288,54 @@
     }
   } 
 
-  
+  /*---------------------------------------------------------
+  pre: curVidEl existing
+  post: addes keydown listener
+  adds bettervideo control so you can do things like advance by
+  a second or even 0.03 of a second.
+  ---------------------------------------------------------*/
+  function betterVidCntrl(){
+    window.addEventListener("keydown", function(e){
+      if(curVidEl){
+        switch(e.key){
+          case "ArrowLeft":
+            e.preventDefault();
+            if(e.ctrlKey&&!e.altKey&&!e.shiftKey){
+            curVidEl.currentTime-=1;
+            }
+            else if(!e.ctrlKey&&e.altKey&&!e.shiftKey){
+            curVidEl.currentTime-=0.03;
+            }
+            else if(!e.ctrlKey&&!e.altKey&&e.shiftKey){
+            curVidEl.currentTime-=20;
+            }
+            else{
+            curVidEl.currentTime-=5;
+            }
+          break;
+          case "ArrowRight":
+            e.preventDefault();
+            if(e.ctrlKey&&!e.altKey&&!e.shiftKey){
+            curVidEl.currentTime+=1;
+            }
+            else if(!e.ctrlKey&&e.altKey&&!e.shiftKey){
+            curVidEl.currentTime+=0.03;
+            }
+            else if(!e.ctrlKey&&!e.altKey&&e.shiftKey){
+            curVidEl.currentTime+=20;
+            }
+            else{
+            curVidEl.currentTime+=5;
+            }
+          break;
+          default:
+          break;
+        }
+      }
+    },true);
+
+
+  }
 
   /*-----------------------------------------------
   pre: global var curVidEl, curEl and dmn
@@ -326,6 +373,7 @@
 
 
     if(mngTgl){
+    betterVidCntrl();
       document.addEventListener("click", (e)=>{
         if(e.target.hasOwnProperty("bwmAct")){
           switch(e.target.bwmAct){
@@ -561,7 +609,16 @@
     videoStopBList=item.videoStopBList;
     }
 
-
+/*
+  var videoBttrCntrl={}; //which domains to ignore stop auto play back on.
+    if(!item.hasOwnProperty('videoBttrCntrl')){
+    chrome.storage.local.set({videoBttrCntrl: {}});
+    videoBttrCntrl={};
+    }
+    else{
+    videoBttrCntrl=item.videoBttrCntrl;
+    }
+*/
 
   videoStopEval(videoMngTgl, videoStopTgl, videoStopList, videoStopBList);//checks to see how to evalutate video stoppage
 
