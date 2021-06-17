@@ -14,6 +14,7 @@
   window.hasModaled = false;
 
   var curVidEl=null;
+  var outVidEl=null;
   var curEl=null;
   var dmn=null;  
 
@@ -296,45 +297,26 @@
   ---------------------------------------------------------*/
   function betterVidCntrl(){
     window.addEventListener("keydown", function(e){
-      if(curVidEl){
-        switch(e.key){
-          case "ArrowLeft":
-            e.preventDefault();
-            if(e.ctrlKey&&!e.altKey&&!e.shiftKey){
-            curVidEl.currentTime-=1;
-            }
-            else if(!e.ctrlKey&&e.altKey&&!e.shiftKey){
-            curVidEl.currentTime-=0.03;
-            }
-            else if(!e.ctrlKey&&!e.altKey&&e.shiftKey){
-            curVidEl.currentTime-=20;
-            }
-            else{
-            curVidEl.currentTime-=5;
-            }
-          break;
-          case "ArrowRight":
-            e.preventDefault();
-            if(e.ctrlKey&&!e.altKey&&!e.shiftKey){
-            curVidEl.currentTime+=1;
-            }
-            else if(!e.ctrlKey&&e.altKey&&!e.shiftKey){
-            curVidEl.currentTime+=0.03;
-            }
-            else if(!e.ctrlKey&&!e.altKey&&e.shiftKey){
-            curVidEl.currentTime+=20;
-            }
-            else{
-            curVidEl.currentTime+=5;
-            }
-          break;
-          default:
-          break;
+      if(curVidEl&&curVidEl!=outVidEl){
+      var time=0;
+      time+=e.ctrlKey?1:0;
+      time+=e.altKey?0.03:0;
+      time+=e.shiftKey?20:0;
+        if(time>0){
+        e.preventDefault();
+          switch(e.key){
+            case "ArrowLeft":
+              curVidEl.currentTime-=time;
+            break;
+            case "ArrowRight":
+              curVidEl.currentTime+=time;
+            break;
+            default:
+            break;
+          }
         }
       }
     },true);
-
-
   }
 
   /*-----------------------------------------------
@@ -394,7 +376,8 @@
         if(on||e.target.id==el.id){
 
         //setting global var curVidEl to current video element so other functions can find/control it
-        curVidEl=on?on:curVidEl;
+        curVidEl=on;
+        outVidEl=null;
 
         //setting global var curEl to current element so other function can find/control it
         curEl=e.target;
@@ -408,24 +391,22 @@
           document.body.appendChild(el);
           }
         
-          if(on){
-          var pos=curEl.getBoundingClientRect();
-          /*
-          removing this for now until I see a real world example for it
-          because there's no good way to communicate that the video element returned from seekVidEl is from within an iframe 
-          var subPos={x:0,y:0};
-            //the video could be in an iframe. If so, look for the video
-            if(curEl.tagName.toLocaleLowerCase()=="iframe"){
-            subPos=on.getBoundingClientRect();
-            }
-          el.style.left=window.scrollX+pos.x+subPos.x+"px";
-          el.style.top=window.scrollY+pos.y+subPos.y+"px";
-          */
-          el.style.left=window.scrollX+pos.x+"px";
-          el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
-          //console.log(pos.x+", "+pos.y);
-          //console.log(el.style.left+", "+el.style.top);
+        var pos=curEl.getBoundingClientRect();
+        /*
+        removing this for now until I see a real world example for it
+        because there's no good way to communicate that the video element returned from seekVidEl is from within an iframe 
+        var subPos={x:0,y:0};
+          //the video could be in an iframe. If so, look for the video
+          if(curEl.tagName.toLocaleLowerCase()=="iframe"){
+          subPos=on.getBoundingClientRect();
           }
+        el.style.left=window.scrollX+pos.x+subPos.x+"px";
+        el.style.top=window.scrollY+pos.y+subPos.y+"px";
+        */
+        el.style.left=window.scrollX+pos.x+"px";
+        el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
+        //console.log(pos.x+", "+pos.y);
+        //console.log(el.style.left+", "+el.style.top);
         }
         else{
           if(e.target&&e.target.id!=el.id&&document.getElementById(el.id)){
@@ -439,6 +420,14 @@
           }
         }
       });
+
+      //whether or not you've moused out of that video. Used for betterVidCntrls()
+      document.addEventListener("mouseout",(e)=>{
+      on=seekVidEl(e.target);
+        if(on||e.target.id==el.id){
+        outVidEl=on;
+        }
+      }); 
 
       //adjust el when window resizes
       window.addEventListener("resize",(e)=>{
