@@ -302,7 +302,6 @@
       time+=e.ctrlKey?1:0;
       time+=e.altKey?0.03:0;
       time+=e.shiftKey?20:0;
-      console.log(time);
         if(time>0){
         e.preventDefault();
           switch(e.key){
