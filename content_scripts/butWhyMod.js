@@ -302,6 +302,7 @@
       time+=e.ctrlKey?1:0;
       time+=e.altKey?0.03:0;
       time+=e.shiftKey?20:0;
+      console.log(time);
         if(time>0){
         e.preventDefault();
           switch(e.key){
@@ -376,7 +377,8 @@
         if(on||e.target.id==el.id){
 
         //setting global var curVidEl to current video element so other functions can find/control it
-        curVidEl=on;
+        curVidEl=on?on:curVidEl;
+        console.log(curVidEl);
         outVidEl=null;
 
         //setting global var curEl to current element so other function can find/control it
@@ -390,23 +392,25 @@
           document.head.appendChild(sty);
           document.body.appendChild(el);
           }
-        
-        var pos=curEl.getBoundingClientRect();
-        /*
-        removing this for now until I see a real world example for it
-        because there's no good way to communicate that the video element returned from seekVidEl is from within an iframe 
-        var subPos={x:0,y:0};
-          //the video could be in an iframe. If so, look for the video
-          if(curEl.tagName.toLocaleLowerCase()=="iframe"){
-          subPos=on.getBoundingClientRect();
+       
+          if(on){ 
+          var pos=curEl.getBoundingClientRect();
+          /*
+          removing this for now until I see a real world example for it
+          because there's no good way to communicate that the video element returned from seekVidEl is from within an iframe 
+          var subPos={x:0,y:0};
+            //the video could be in an iframe. If so, look for the video
+            if(curEl.tagName.toLocaleLowerCase()=="iframe"){
+            subPos=on.getBoundingClientRect();
+            }
+          el.style.left=window.scrollX+pos.x+subPos.x+"px";
+          el.style.top=window.scrollY+pos.y+subPos.y+"px";
+          */
+          el.style.left=window.scrollX+pos.x+"px";
+          el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
+          //console.log(pos.x+", "+pos.y);
+          //console.log(el.style.left+", "+el.style.top);
           }
-        el.style.left=window.scrollX+pos.x+subPos.x+"px";
-        el.style.top=window.scrollY+pos.y+subPos.y+"px";
-        */
-        el.style.left=window.scrollX+pos.x+"px";
-        el.style.top=window.scrollY+pos.y+Math.floor(pos.height/4)+"px";
-        //console.log(pos.x+", "+pos.y);
-        //console.log(el.style.left+", "+el.style.top);
         }
         else{
           if(e.target&&e.target.id!=el.id&&document.getElementById(el.id)){
