@@ -297,12 +297,13 @@
   ---------------------------------------------------------*/
   function betterVidCntrl(){
     window.addEventListener("keydown", function(e){
+      
       if(curVidEl&&curVidEl!=outVidEl){
       var time=0;
       time+=e.ctrlKey?1:0;
       time+=e.altKey?0.03:0;
       time+=e.shiftKey?20:0;
-        if(time>0){
+        if(time>0&&(e.key=="ArrowLeft"||e.key=="ArrowRight")){
         e.preventDefault();
           switch(e.key){
             case "ArrowLeft":
@@ -377,7 +378,6 @@
 
         //setting global var curVidEl to current video element so other functions can find/control it
         curVidEl=on?on:curVidEl;
-        console.log(curVidEl);
         outVidEl=null;
 
         //setting global var curEl to current element so other function can find/control it
