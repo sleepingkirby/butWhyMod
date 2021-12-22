@@ -27,6 +27,7 @@
     {
       "matches": ["<all_urls>"],
       "js": ["./content_scripts/butWhyMod.js"],
+      "all_frames": true,
       "run_at": "document_start"
     }
   ]
