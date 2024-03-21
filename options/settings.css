@@ -1,5 +1,6 @@
 body{
 background-color: #000000;
+color: #888888;
 font-family: "DejaVu Sans", Arial, sans-serif;
 }
 
@@ -7,6 +8,12 @@ input{
 font-family: "DejaVu Sans", Arial, sans-serif;
 font-size: 
 }
+
+.pageWrapper{
+
+}
+
+.pageWrapper div{}
 
 .custDmnPat{
 background-color: #000000;
