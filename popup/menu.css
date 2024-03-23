@@ -1,59 +1,113 @@
 html, body {
-  width: 150px;
-  font-family: "arial";
-  background-color: #ffffff;
-  font-size: 10pt;
+  width: auto;
+  font-family: "DejaVu Sans", Arial, sans-serif;
+  background-color: #000000;
+  color: #888888;
+  font-size: 9pt;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+body > div{
+display: flex;
+margin-bottom: 8px;
+justify-content: flex-end;
+}
+
+input{
+font-size: 9pt;
+}
+
+a{
+text-decoration: none;
+color: #0852ff;
+font-weight: 700;
+}
+
+a:visited{
+text-decoration: none;
+color: #0852ff;
+font-weight: 700;
 }
 
 .button {
   margin: 3% auto;
   padding: 2px;
   text-align: center;
-  font-size: 10pt;
   cursor: pointer;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #888888;
 }
 
 .button:focus{
   border: 1px solid #000000;
 }
 
+.ttls{
+font-size: 10pt;
+font-weight: 700;
+margin-right: 20px;
+}
+
 .nowbtn{
-margin-bottom: 3px;
 width: 100%;
+justify-content: space-between;
+align-items: center;
 text-align: right;
 }
 
-.addToIgn{
+.addTo{
+width: 100%;
+justify-content: flex-end;
+text-align: right;
+}
+
+.addTo input{
+margin-left: 8px;
+}
+
+.addTo label{
+margin-left: 8px;
+}
+
+.addToApply{
 margin-bottom: 10px;
 width: 100%;
 text-align: right;
 }
 
 .switch{
-margin-top: 8px;
 width: 100%;
+margin-top: 6px;
 text-align: right;
 }
 
 .btn{
-border: 1px solid #e6e6e6;
+border: 1px solid #888888;
 background-color: #31B0D5;
-color: #ffffff;
+color: #f8f8f8;
 padding: 3px 5px 3px 5px;
 border-radius: 4px;
 margin: 0px 0px 0px 0px;
+font-family: "sans-serif";
 }
 
 .btn:active{
 border-color: #888888;
 }
 
-#tgl{
+input[type=checkbox]{
 display: none;
 }
 
-#tgl:checked+.btn{
+
+input[type=checkbox]+.btn{
+background-color: black;
+color: #888888;
+}
+
+input[type=checkbox]:checked+.btn{
 background-color: #31B0D5;
 color: #ffffff;
 }
@@ -62,24 +116,35 @@ color: #ffffff;
 content: "auto prune";
 }
 
-#tgl+.btn{
-background-color: white;
-color: black;
+#tgl+.btn::before{
+content: "auto prune";
 }
 
-#tgl+.btn::before{
-content: "manual prune";
+.vids{
+display:flex;
+border-top:1px solid #888888;
+margin-top: 6px;
+padding: 10px 0px 0px 0px;
+justify-content:space-between;
 }
 
 a{
-font-size: 8pt;
+font-size: smaller;
+font-family: "sans-serif";
 text-decoration: none;
 }
 
 .about{
-margin-top: 8px;
 width: 100%;
-text-align: right;
+flex-direction:column;
+justify-content:flex-end;
+align-items: flex-end;
+margin-top: 6px;
+margin-bottom: 0px;
+}
+
+.about a{
+margin-top: 4px;
 }
 
 .notify{
@@ -89,11 +154,10 @@ background-color: #FFD2D9;
 padding: 4px 4px 4px 4px;
 color: #FF3B5A;
 text-align: center;
-margin-bottom: 4px;
+margin-bottom: 0px;
 opacity: 0;
 height: auto;
 max-height: 0px;
-margin-bottom: 0px;
 }
 
 #fadeOut{

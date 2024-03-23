@@ -10,20 +10,40 @@
   <div class="notify">
   </div>
   <div class="nowbtn">
-    <input type="submit" class="btn" name="disableMdl" value="disable modals">
+    <div class="ttls">Modals: </div>
+    <input type="submit" class="btn" name="disableMdl" value="remove">
   </div>
-  <div class="addToIgn">
-    <input type="submit" class="btn" name="addToIgnList" value="white list">
+  <div class="addTo">
+    <input type="submit" class="btn" name="addToIgnList" value="ignore">
+    <input type="submit" class="btn" name="addToApplyList" value="apply">
   </div>
   <div class="switch">
-    <input type="checkbox" name="mnl" id="tgl" ></input>
+    <input type="checkbox" name="mnl" id="tgl" style="display:block;"></input>
     <label for="tgl" class="btn" style="margin: 0px 0px 0px 0px;"></label>
   </div>
 
+  <div class="vids">
+    <div class="ttls">Videos: </div>
+    <input type="checkbox" name="videoMngTgl" id="vidStpSkip" ></input>
+    <label for="vidStpSkip" class="btn" style="margin: 0px 0px 0px 0px;">skip btn</label>
+  </div>
+
+  <div>
+    <input type="checkbox" name="videoStopTgl" id="videoStopTgl" ></input>
+    <label for="videoStopTgl" class="btn" style="margin: 0px 0px 0px 0px;">stop auto</label>
+  </div>
+
+  <div class="addTo">
+    <input type="checkbox" name="videoStopBList" id="videoStopBList" ></input>
+    <label for="videoStopBList" class="btn">ignore</label>
+    <input type="checkbox" name="videoStopList" id="videoStopList" ></input>
+    <label for="videoStopList" class="btn">apply</label>
+  </div>
+
+
   <div class="about">
-  <a href="" name="settings" >settings</a>
-  <br>
-  <a href="https://patreon.com/WKLaume" alt="Was this helpful to you? Have a suggestion? Click here. (^^)/">donate</a>
+  <a href="" name="settings">settings</a>
+  <a href="https://patreon.com/WKLaume" name="donate">donate</a>
   </div>
   <script src="menu.js"> </script>
 </body>

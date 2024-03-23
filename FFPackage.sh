@@ -1,2 +1,2 @@
 #!/bin/bash
-zip -r -FS -Z deflate ./releases/butWhyMod.xpi ./content_scripts/ icons/ manifest.json options/ popup/
+zip -r -FS -Z deflate ./releases/butWhyMod.xpi background.js ./content_scripts/ icons/ manifest.json options/ popup/
